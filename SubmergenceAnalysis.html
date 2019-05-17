@@ -61,22 +61,29 @@
         Cesium.Cartesian3.fromDegrees(114.2525772592218, 30.36346226508150)
     ];
 
+    var waterHeight = 0;
+
     // 创建一个ClassificationPrimitive对象
-    var buildingHighlight = viewer.scene.primitives.add(new Cesium.ClassificationPrimitive({
-        geometryInstances: new Cesium.GeometryInstance({
-            geometry: new Cesium.PolygonGeometry({
-                extrudedHeight: 0,
-                height: 150,
-                polygonHierarchy: new Cesium.PolygonHierarchy(positions)
+    var getPolygonPrimitive = function () {
+        return new Cesium.ClassificationPrimitive({
+            geometryInstances: new Cesium.GeometryInstance({
+                geometry: new Cesium.PolygonGeometry({
+                    extrudedHeight: waterHeight,
+                    height: 0,
+                    polygonHierarchy: new Cesium.PolygonHierarchy(positions)
+                }),
+                attributes: {
+                    color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.GREEN.withAlpha(0.5)),
+                    show: new Cesium.ShowGeometryInstanceAttribute(true)
+                },
+                id: 'building'
             }),
-            attributes: {
-                color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.GREEN.withAlpha(0.5)),
-                show: new Cesium.ShowGeometryInstanceAttribute(true)
-            },
-            id: 'building'
-        }),
-        classificationType: Cesium.ClassificationType.TERRAIN
-    }));
+            classificationType: Cesium.ClassificationType.TERRAIN,
+            asynchronous: false
+        });
+    };
+
+    var polygonPrimitive = viewer.scene.primitives.add(getPolygonPrimitive());
 
     viewer.camera.setView({
         destination: new Cesium.Cartesian3(-2267365.9077936024, 5026893.279706578, 3202033.0742220455),
@@ -86,6 +93,17 @@
             roll: 6.283157048530953
         }
     });
+
+
+    setInterval(function () {
+        if (waterHeight > 250) {
+            waterHeight = 0;
+        }
+        waterHeight += 0.1;
+        viewer.scene.primitives.remove(polygonPrimitive);
+
+        polygonPrimitive = viewer.scene.primitives.add(getPolygonPrimitive());
+    }, 100);
 
 </script>
 </body>
