@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Cesium-地形开挖-任意多边形开挖 | 咖啡GIS的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="“任意多边形地形开挖” 是“地形开挖”的补充篇，在这节里，我们介绍关于如何使用任意多边形对地形进行开挖，同时，由于有不少小伙伴也咨询了关于“地形开挖”篇后序内容中的填充地形的效果，之前没放出来，是想让小伙伴有个思考的过程，现在放出来，也是提供一种解决方法。  效果图 直接上代码说明方法 1、使用鼠标交互事件，采集需要开挖的范围 注： 这里要特别注意一点，为了下面的计算 ClippingPlane">
+<meta name="keywords" content="Cesium,地形开挖">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cesium-地形开挖-任意多边形开挖">
+<meta property="og:url" content="http://www.kfgis.site/blog/2019/10/08/dixingkaiwa2/index.html">
+<meta property="og:site_name" content="咖啡GIS的个人博客">
+<meta property="og:description" content="“任意多边形地形开挖” 是“地形开挖”的补充篇，在这节里，我们介绍关于如何使用任意多边形对地形进行开挖，同时，由于有不少小伙伴也咨询了关于“地形开挖”篇后序内容中的填充地形的效果，之前没放出来，是想让小伙伴有个思考的过程，现在放出来，也是提供一种解决方法。  效果图 直接上代码说明方法 1、使用鼠标交互事件，采集需要开挖的范围 注： 这里要特别注意一点，为了下面的计算 ClippingPlane">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://images.xiaozhuanlan.com/photo/2019/3f3231aee57663b1b582c46da05c2cb8.png">
+<meta property="og:image" content="https://images.xiaozhuanlan.com/photo/2019/392125ffad2d954866d4f0dc738f19b7.png">
+<meta property="og:updated_time" content="2019-10-08T10:26:38.676Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cesium-地形开挖-任意多边形开挖">
+<meta name="twitter:description" content="“任意多边形地形开挖” 是“地形开挖”的补充篇，在这节里，我们介绍关于如何使用任意多边形对地形进行开挖，同时，由于有不少小伙伴也咨询了关于“地形开挖”篇后序内容中的填充地形的效果，之前没放出来，是想让小伙伴有个思考的过程，现在放出来，也是提供一种解决方法。  效果图 直接上代码说明方法 1、使用鼠标交互事件，采集需要开挖的范围 注： 这里要特别注意一点，为了下面的计算 ClippingPlane">
+<meta name="twitter:image" content="https://images.xiaozhuanlan.com/photo/2019/3f3231aee57663b1b582c46da05c2cb8.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">咖啡GIS的个人博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">主页</a>
+        
+          <a class="main-nav-link" href="/archives">所有文章</a>
+        
+        <a class="main-nav-link" href="./works">作品</a>
+      </nav>
+      <nav id="sub-nav">
+        
+        
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.kfgis.site/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-dixingkaiwa2" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/08/dixingkaiwa2/" class="article-date">
+  <time datetime="2019-10-08T08:26:00.000Z" itemprop="datePublished">2019-10-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Cesium-地形开挖-任意多边形开挖
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <blockquote>
+<p>“任意多边形地形开挖” 是“地形开挖”的补充篇，在这节里，我们介绍关于如何使用任意多边形对地形进行开挖，同时，由于有不少小伙伴也咨询了关于“地形开挖”篇后序内容中的填充地形的效果，之前没放出来，是想让小伙伴有个思考的过程，现在放出来，也是提供一种解决方法。</p>
+</blockquote>
+<p><strong>效果图</strong><br><img src="https://images.xiaozhuanlan.com/photo/2019/3f3231aee57663b1b582c46da05c2cb8.png" alt></p>
+<p>直接上代码说明方法</p>
+<p>1、使用鼠标交互事件，采集需要开挖的范围</p>
+<p><strong>注：</strong> 这里要特别注意一点，为了下面的计算 ClippingPlane 方便，采集点顺序最好是 <strong>逆时针</strong>，如果点集的组织是顺时针，需要首先逆序成逆时针，关于如果判断一个点集是否是顺时针或者是逆时针，可以用向量法求多边形面积的方式，如果为正，则为顺时针，否者为逆时针。或者使用JS插件计算，比如turf.js。<br><img src="https://images.xiaozhuanlan.com/photo/2019/392125ffad2d954866d4f0dc738f19b7.png" alt></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var points = [</span><br><span class="line">    new Cesium.Cartesian3(-1715292.6999753984, 4993153.157628936, 3566663.752912529),</span><br><span class="line">    new Cesium.Cartesian3(-1715285.8150713604, 4993167.072601330,3566647.6921528564),</span><br><span class="line">    new Cesium.Cartesian3(-1715286.5985765400, 4993181.309761941, 3566627.519787549),</span><br><span class="line">    new Cesium.Cartesian3(-1715299.0249209427, 4993191.177501195, 3566607.861264360),</span><br><span class="line">    new Cesium.Cartesian3(-1715349.5762367432, 4993176.675656664, 3566603.878289345),</span><br><span class="line">    new Cesium.Cartesian3(-1715375.5538853381, 4993159.990032478, 3566614.671147202),</span><br><span class="line">    new Cesium.Cartesian3(-1715370.1945772346, 4993141.041835706, 3566643.580587877),</span><br><span class="line">    new Cesium.Cartesian3(-1715359.7019716015, 4993131.063945592, 3566662.468046927),</span><br><span class="line">    new Cesium.Cartesian3(-1715321.9141253997, 4993137.762602262, 3566671.205164391)</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
+<p>2、根据点集计算 ClippingPlane （这个计算方式来源于官网示例）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">var pointsLength = points.length;</span><br><span class="line">var clippingPlanes = []; // 存储ClippingPlane集合</span><br><span class="line">for (var i = 0; i &lt; pointsLength; ++i) &#123;</span><br><span class="line">  var nextIndex = (i + 1) % pointsLength;</span><br><span class="line">  var midpoint = Cesium.Cartesian3.add(points[i], points[nextIndex], new Cesium.Cartesian3());</span><br><span class="line">  midpoint = Cesium.Cartesian3.multiplyByScalar(midpoint, 0.5, midpoint);</span><br><span class="line"></span><br><span class="line">  var up = Cesium.Cartesian3.normalize(midpoint, new Cesium.Cartesian3());</span><br><span class="line">  var right = Cesium.Cartesian3.subtract(points[nextIndex], midpoint, new Cesium.Cartesian3());</span><br><span class="line">  right = Cesium.Cartesian3.normalize(right, right);</span><br><span class="line"></span><br><span class="line">  var normal = Cesium.Cartesian3.cross(right, up, new Cesium.Cartesian3());</span><br><span class="line">  normal = Cesium.Cartesian3.normalize(normal, normal);</span><br><span class="line"></span><br><span class="line">  var originCenteredPlane = new Cesium.Plane(normal, 0.0);</span><br><span class="line">  var distance = Cesium.Plane.getPointDistance(originCenteredPlane, midpoint);</span><br><span class="line"></span><br><span class="line">  clippingPlanes.push(new Cesium.ClippingPlane(normal, distance));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>3、赋值给globe的 clippingPlanes 属性</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">viewer.scene.globe.clippingPlanes = new Cesium.ClippingPlaneCollection(&#123;</span><br><span class="line">  planes: clippingPlanes,</span><br><span class="line">  edgeWidth: 1.0,</span><br><span class="line">  edgeColor: Cesium.Color.WHITE</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
+<p>下面就是填充地形的代码（比较简单，思想就是插值计算地形高度，绘制多边形）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">// 多边形每个顶点的坐标</span><br><span class="line">var points = [];</span><br><span class="line"></span><br><span class="line">// 依次计算顶点与下个顶点之间组成的线段，中间按照精度大小插值n个点，然后计算每个点的地形高度</span><br><span class="line">var promise = calHeight(points[i], points[i+1], n); // 返回promise对象</span><br><span class="line"></span><br><span class="line">// 待所有的计算完毕后，处理坐标点，构造多边形</span><br><span class="line">Promise.all([promise1, promise2, ...]).then(data =&gt; &#123;</span><br><span class="line">    var positons = Array.prototype.concat.apply([], data); // 数组降维</span><br><span class="line">    var hierarchy = [];</span><br><span class="line">    positons.forEach(element =&gt; &#123;</span><br><span class="line">        hierarchy.push(Cesium.Math.toDegrees(element.longitude));</span><br><span class="line">        hierarchy.push(Cesium.Math.toDegrees(element.latitude));</span><br><span class="line">        hierarchy.push(element.height);</span><br><span class="line">    &#125;);</span><br><span class="line">    viewer.entities.add(&#123;</span><br><span class="line">        polygon: &#123;</span><br><span class="line">            hierarchy: Cesium.Cartesian3.fromDegreesArrayHeights(hierarchy),</span><br><span class="line">            material: new Cesium.ImageMaterialProperty(&#123;</span><br><span class="line">                image: &quot;../images/box.jpg&quot;</span><br><span class="line">            &#125;),</span><br><span class="line">            closeTop: false, // 这个要设置为false</span><br><span class="line">            extrudedHeight: 0,</span><br><span class="line">            perPositionHeight: true // 这个要设置true</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
+<p>插值、计算坐标点高度（如果不加载地形的话，这步可以省略）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">function calHeight(fromPoint, endPoint, count) &#123;</span><br><span class="line">    var positions = [];</span><br><span class="line">    for (var i = 0; i &lt;= count; i++) &#123;</span><br><span class="line">        var cart = Cesium.Cartesian3.lerp(fromPoint, endPoint, i / count, new Cesium.Cartesian3());</span><br><span class="line">        positions.push(Cesium.Cartographic.fromCartesian(cart));</span><br><span class="line">    &#125;</span><br><span class="line">    return new Promise((resolve, reject) =&gt; &#123;</span><br><span class="line">        var promise = Cesium.sampleTerrainMostDetailed(terrainProvider, positions);</span><br><span class="line">        Cesium.when(promise, function (updatedPositions) &#123;</span><br><span class="line">            resolve(updatedPositions);</span><br><span class="line">        &#125;);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.kfgis.site/blog/2019/10/08/dixingkaiwa2/" data-id="ck1hpqo140000rok8uik8tpb7" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cesium/">Cesium</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/地形开挖/">地形开挖</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/10/08/tongshifenxi/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          Cesium-通视分析
+        
+      </div>
+    </a>
+  
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cesium/">Cesium</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/剖面分析/">剖面分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/地形开挖/">地形开挖</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测量/">测量</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通视分析/">通视分析</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Cesium/" style="font-size: 20px;">Cesium</a> <a href="/tags/剖面分析/" style="font-size: 10px;">剖面分析</a> <a href="/tags/地形开挖/" style="font-size: 10px;">地形开挖</a> <a href="/tags/测量/" style="font-size: 10px;">测量</a> <a href="/tags/通视分析/" style="font-size: 10px;">通视分析</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/10/08/celiang/">Cesium-测量</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/08/poumianfenxi/">Cesium-剖面分析</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/08/tongshifenxi/">Cesium-通视分析</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/08/dixingkaiwa2/">Cesium-地形开挖-任意多边形开挖</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 咖啡GIS<br>
+      <p>关于博主：咖啡GIS，12年毕业于武汉理工大学GIS专业，毕业后一直从事WebGIS二、三维开发，熟悉LeafLet、OpenLaryes、Cesium等开源框架，在GIS数据采集、制作、项目开发方面有一定的项目经验，并从事过房产、气象、智慧社区等行业，有咨询、交流、合作请联系博主QQ：2034146498</p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">所有文章</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
