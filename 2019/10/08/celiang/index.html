@@ -15,7 +15,7 @@
 <meta property="og:site_name" content="咖啡GIS的个人博客">
 <meta property="og:description" content="Cesium 是一款面向三维地球和地图的，世界级的JavaScript开源产品。它提供了基于JavaScript语言的开发包，方便用户快速搭建一款零插件的虚拟地球Web应用，并在性能，精度，渲染质量以及多平台，易用性上都有高质量的保证。  关于测量 测量是一个GIS系统最基本的，也是必备的模块，网上也有很多相关开发者分享过关于Cesium测量的技术文章，风格各异，但是大同小异，只要弄清楚了原理以及">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-10-08T10:24:37.041Z">
+<meta property="og:updated_time" content="2019-10-08T11:47:50.798Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Cesium-测量">
 <meta name="twitter:description" content="Cesium 是一款面向三维地球和地图的，世界级的JavaScript开源产品。它提供了基于JavaScript语言的开发包，方便用户快速搭建一款零插件的虚拟地球Web应用，并在性能，精度，渲染质量以及多平台，易用性上都有高质量的保证。  关于测量 测量是一个GIS系统最基本的，也是必备的模块，网上也有很多相关开发者分享过关于Cesium测量的技术文章，风格各异，但是大同小异，只要弄清楚了原理以及">
@@ -92,6 +92,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cesium.Cartesian3.distance(firstPoint, secondPoint);</span><br></pre></td></tr></table></figure>
 
 <p>计算方法已经有了，我们要做的就是添砖加瓦，做成一个可供用户交互的测距，并且实时显示距离长度的效果。</p>
+<a id="more"></a>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 注册鼠标左击事件</span><br><span class="line">viewer.screenSpaceEventHandler.setInputAction(function (clickEvent) &#123;</span><br><span class="line">	var cartesian = viewer.scene.pickPosition(clickEvent.position);</span><br><span class="line">	// 如果是第一次点击</span><br><span class="line">	if (positions.length == 0) &#123;</span><br><span class="line">		addPoint(cartesian); // 存储第一个点，并在点击处绘制一个点entity</span><br><span class="line">		// 同时注册鼠标移动事件</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		addPoint(cartesian); // 存储第二个点，并在点击处绘制一个点entity，测量结束，注销所有的鼠标注册事件</span><br><span class="line">	&#125;</span><br><span class="line">&#125;, Cesium.ScreenSpaceEventType.LEFT_CLICK);</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 注册鼠标移动事件</span><br><span class="line">viewer.screenSpaceEventHandler.setInputAction(function (moveEvent) &#123;</span><br><span class="line">	var movePosition = viewer.scene.pickPosition(moveEvent.endPosition); // 鼠标移动的点</span><br><span class="line">	if (positions.length == 1) &#123;</span><br><span class="line">		// 存储第二个点</span><br><span class="line">		positions.push(movePosition);</span><br><span class="line">		// 绘制线</span><br><span class="line">		addLine(positions);</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		positions.pop(); // 移除上次鼠标经过的点</span><br><span class="line">		positions.push(movePosition); // 存储这次鼠标经过的点</span><br><span class="line">		// 计算中点</span><br><span class="line">		var centerPoint = Cesium.Cartesian3.midpoint(positions[0], positions[1], new Cesium.Cartesian3());</span><br><span class="line">		// 计算距离</span><br><span class="line">		var lengthText = &quot;距离：&quot; + getLengthText(positions[0], positions[1]);</span><br><span class="line">		// 绘制距离长度标签</span><br><span class="line">		labelEntity = addLabel(centerPoint, lengthText);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;, Cesium.ScreenSpaceEventType.MOUSE_MOVE);</span><br></pre></td></tr></table></figure>
@@ -118,7 +119,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.kfgis.site/2019/10/08/celiang/" data-id="ck1hpqo1d0003rok8rwrv4c79" class="article-share-link">Share</a>
+      <a data-url="http://www.kfgis.site/2019/10/08/celiang/" data-id="ck1hsayow0001swk8bq8w8vfm" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cesium/">Cesium</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/测量/">测量</a></li></ul>

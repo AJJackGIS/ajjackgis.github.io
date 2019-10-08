@@ -7,20 +7,20 @@
   
   <title>Cesium-地形开挖-任意多边形开挖 | 咖啡GIS的个人博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="“任意多边形地形开挖” 是“地形开挖”的补充篇，在这节里，我们介绍关于如何使用任意多边形对地形进行开挖，同时，由于有不少小伙伴也咨询了关于“地形开挖”篇后序内容中的填充地形的效果，之前没放出来，是想让小伙伴有个思考的过程，现在放出来，也是提供一种解决方法。  效果图 直接上代码说明方法 1、使用鼠标交互事件，采集需要开挖的范围 注： 这里要特别注意一点，为了下面的计算 ClippingPlane">
+  <meta name="description" content="任意多边形地形开挖 是 地形开挖 的补充篇，在这节里，我们介绍关于如何使用任意多边形对地形进行开挖，同时，由于有不少小伙伴也咨询了关于“地形开挖”篇后序内容中的填充地形的效果，之前没放出来，是想让小伙伴有个思考的过程，现在放出来，也是提供一种解决方法。 效果图">
 <meta name="keywords" content="Cesium,地形开挖">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Cesium-地形开挖-任意多边形开挖">
 <meta property="og:url" content="http://www.kfgis.site/2019/10/08/dixingkaiwa2/index.html">
 <meta property="og:site_name" content="咖啡GIS的个人博客">
-<meta property="og:description" content="“任意多边形地形开挖” 是“地形开挖”的补充篇，在这节里，我们介绍关于如何使用任意多边形对地形进行开挖，同时，由于有不少小伙伴也咨询了关于“地形开挖”篇后序内容中的填充地形的效果，之前没放出来，是想让小伙伴有个思考的过程，现在放出来，也是提供一种解决方法。  效果图 直接上代码说明方法 1、使用鼠标交互事件，采集需要开挖的范围 注： 这里要特别注意一点，为了下面的计算 ClippingPlane">
+<meta property="og:description" content="任意多边形地形开挖 是 地形开挖 的补充篇，在这节里，我们介绍关于如何使用任意多边形对地形进行开挖，同时，由于有不少小伙伴也咨询了关于“地形开挖”篇后序内容中的填充地形的效果，之前没放出来，是想让小伙伴有个思考的过程，现在放出来，也是提供一种解决方法。 效果图">
 <meta property="og:locale" content="zh-CN">
 <meta property="og:image" content="https://images.xiaozhuanlan.com/photo/2019/3f3231aee57663b1b582c46da05c2cb8.png">
 <meta property="og:image" content="https://images.xiaozhuanlan.com/photo/2019/392125ffad2d954866d4f0dc738f19b7.png">
-<meta property="og:updated_time" content="2019-10-08T10:26:38.676Z">
+<meta property="og:updated_time" content="2019-10-08T11:50:44.895Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Cesium-地形开挖-任意多边形开挖">
-<meta name="twitter:description" content="“任意多边形地形开挖” 是“地形开挖”的补充篇，在这节里，我们介绍关于如何使用任意多边形对地形进行开挖，同时，由于有不少小伙伴也咨询了关于“地形开挖”篇后序内容中的填充地形的效果，之前没放出来，是想让小伙伴有个思考的过程，现在放出来，也是提供一种解决方法。  效果图 直接上代码说明方法 1、使用鼠标交互事件，采集需要开挖的范围 注： 这里要特别注意一点，为了下面的计算 ClippingPlane">
+<meta name="twitter:description" content="任意多边形地形开挖 是 地形开挖 的补充篇，在这节里，我们介绍关于如何使用任意多边形对地形进行开挖，同时，由于有不少小伙伴也咨询了关于“地形开挖”篇后序内容中的填充地形的效果，之前没放出来，是想让小伙伴有个思考的过程，现在放出来，也是提供一种解决方法。 效果图">
 <meta name="twitter:image" content="https://images.xiaozhuanlan.com/photo/2019/3f3231aee57663b1b582c46da05c2cb8.png">
   
   
@@ -87,10 +87,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <blockquote>
-<p>“任意多边形地形开挖” 是“地形开挖”的补充篇，在这节里，我们介绍关于如何使用任意多边形对地形进行开挖，同时，由于有不少小伙伴也咨询了关于“地形开挖”篇后序内容中的填充地形的效果，之前没放出来，是想让小伙伴有个思考的过程，现在放出来，也是提供一种解决方法。</p>
-</blockquote>
-<p><strong>效果图</strong><br><img src="https://images.xiaozhuanlan.com/photo/2019/3f3231aee57663b1b582c46da05c2cb8.png" alt></p>
+        <p>任意多边形地形开挖 是 地形开挖 的补充篇，在这节里，我们介绍关于如何使用任意多边形对地形进行开挖，同时，由于有不少小伙伴也咨询了关于“地形开挖”篇后序内容中的填充地形的效果，之前没放出来，是想让小伙伴有个思考的过程，现在放出来，也是提供一种解决方法。</p>
+<h2 id="效果图"><a href="#效果图" class="headerlink" title="效果图"></a>效果图</h2><p><img src="https://images.xiaozhuanlan.com/photo/2019/3f3231aee57663b1b582c46da05c2cb8.png" alt></p>
+<a id="more"></a>
+
 <p>直接上代码说明方法</p>
 <p>1、使用鼠标交互事件，采集需要开挖的范围</p>
 <p><strong>注：</strong> 这里要特别注意一点，为了下面的计算 ClippingPlane 方便，采集点顺序最好是 <strong>逆时针</strong>，如果点集的组织是顺时针，需要首先逆序成逆时针，关于如果判断一个点集是否是顺时针或者是逆时针，可以用向量法求多边形面积的方式，如果为正，则为顺时针，否者为逆时针。或者使用JS插件计算，比如turf.js。<br><img src="https://images.xiaozhuanlan.com/photo/2019/392125ffad2d954866d4f0dc738f19b7.png" alt></p>
@@ -110,7 +110,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://www.kfgis.site/2019/10/08/dixingkaiwa2/" data-id="ck1hpqo140000rok8uik8tpb7" class="article-share-link">Share</a>
+      <a data-url="http://www.kfgis.site/2019/10/08/dixingkaiwa2/" data-id="ck1hsayoq0000swk85gb0z4cj" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cesium/">Cesium</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/地形开挖/">地形开挖</a></li></ul>
