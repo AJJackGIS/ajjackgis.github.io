@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>Cesium-测量 | 咖啡GIS的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="Cesium 是一款面向三维地球和地图的，世界级的JavaScript开源产品。它提供了基于JavaScript语言的开发包，方便用户快速搭建一款零插件的虚拟地球Web应用，并在性能，精度，渲染质量以及多平台，易用性上都有高质量的保证。  关于测量 测量是一个GIS系统最基本的，也是必备的模块，网上也有很多相关开发者分享过关于Cesium测量的技术文章，风格各异，但是大同小异，只要弄清楚了原理以及">
+<meta name="keywords" content="Cesium,测量">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cesium-测量">
+<meta property="og:url" content="http://www.kfgis.site/blog/2019/10/08/celiang/index.html">
+<meta property="og:site_name" content="咖啡GIS的个人博客">
+<meta property="og:description" content="Cesium 是一款面向三维地球和地图的，世界级的JavaScript开源产品。它提供了基于JavaScript语言的开发包，方便用户快速搭建一款零插件的虚拟地球Web应用，并在性能，精度，渲染质量以及多平台，易用性上都有高质量的保证。  关于测量 测量是一个GIS系统最基本的，也是必备的模块，网上也有很多相关开发者分享过关于Cesium测量的技术文章，风格各异，但是大同小异，只要弄清楚了原理以及">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-08T10:24:37.041Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Cesium-测量">
+<meta name="twitter:description" content="Cesium 是一款面向三维地球和地图的，世界级的JavaScript开源产品。它提供了基于JavaScript语言的开发包，方便用户快速搭建一款零插件的虚拟地球Web应用，并在性能，精度，渲染质量以及多平台，易用性上都有高质量的保证。  关于测量 测量是一个GIS系统最基本的，也是必备的模块，网上也有很多相关开发者分享过关于Cesium测量的技术文章，风格各异，但是大同小异，只要弄清楚了原理以及">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">咖啡GIS的个人博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">主页</a>
+        
+          <a class="main-nav-link" href="/archives">所有文章</a>
+        
+        <a class="main-nav-link" href="./works">作品</a>
+      </nav>
+      <nav id="sub-nav">
+        
+        
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.kfgis.site/blog"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-celiang" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/08/celiang/" class="article-date">
+  <time datetime="2019-10-08T10:18:53.000Z" itemprop="datePublished">2019-10-08</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Cesium-测量
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Cesium 是一款面向三维地球和地图的，世界级的JavaScript开源产品。它提供了基于JavaScript语言的开发包，方便用户快速搭建一款零插件的虚拟地球Web应用，并在性能，精度，渲染质量以及多平台，易用性上都有高质量的保证。 </p>
+<h2 id="关于测量"><a href="#关于测量" class="headerlink" title="关于测量"></a>关于测量</h2><hr>
+<p>测量是一个GIS系统最基本的，也是必备的模块，网上也有很多相关开发者分享过关于Cesium测量的技术文章，风格各异，但是大同小异，只要弄清楚了原理以及方法，其实每个人都可以写出自己的测量小工具。</p>
+<h2 id="测距"><a href="#测距" class="headerlink" title="测距"></a>测距</h2><hr>
+<p>测距其实计算两点之间的距离，这个计算方法可以使用最原始的直角三角形求斜边的方法，但是我们也可以直接使用Cesium中Cartesian3接口的distance方法。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Cesium.Cartesian3.distance(firstPoint, secondPoint);</span><br></pre></td></tr></table></figure>
+
+<p>计算方法已经有了，我们要做的就是添砖加瓦，做成一个可供用户交互的测距，并且实时显示距离长度的效果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 注册鼠标左击事件</span><br><span class="line">viewer.screenSpaceEventHandler.setInputAction(function (clickEvent) &#123;</span><br><span class="line">	var cartesian = viewer.scene.pickPosition(clickEvent.position);</span><br><span class="line">	// 如果是第一次点击</span><br><span class="line">	if (positions.length == 0) &#123;</span><br><span class="line">		addPoint(cartesian); // 存储第一个点，并在点击处绘制一个点entity</span><br><span class="line">		// 同时注册鼠标移动事件</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		addPoint(cartesian); // 存储第二个点，并在点击处绘制一个点entity，测量结束，注销所有的鼠标注册事件</span><br><span class="line">	&#125;</span><br><span class="line">&#125;, Cesium.ScreenSpaceEventType.LEFT_CLICK);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">// 注册鼠标移动事件</span><br><span class="line">viewer.screenSpaceEventHandler.setInputAction(function (moveEvent) &#123;</span><br><span class="line">	var movePosition = viewer.scene.pickPosition(moveEvent.endPosition); // 鼠标移动的点</span><br><span class="line">	if (positions.length == 1) &#123;</span><br><span class="line">		// 存储第二个点</span><br><span class="line">		positions.push(movePosition);</span><br><span class="line">		// 绘制线</span><br><span class="line">		addLine(positions);</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		positions.pop(); // 移除上次鼠标经过的点</span><br><span class="line">		positions.push(movePosition); // 存储这次鼠标经过的点</span><br><span class="line">		// 计算中点</span><br><span class="line">		var centerPoint = Cesium.Cartesian3.midpoint(positions[0], positions[1], new Cesium.Cartesian3());</span><br><span class="line">		// 计算距离</span><br><span class="line">		var lengthText = &quot;距离：&quot; + getLengthText(positions[0], positions[1]);</span><br><span class="line">		// 绘制距离长度标签</span><br><span class="line">		labelEntity = addLabel(centerPoint, lengthText);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;, Cesium.ScreenSpaceEventType.MOUSE_MOVE);</span><br></pre></td></tr></table></figure>
+
+<h2 id="测面"><a href="#测面" class="headerlink" title="测面"></a>测面</h2><hr>
+<p>测面积，也就是计算至少三个点构成的任意多边形的面积，可以使用拆分三角曲面的方法计算每一个小三角形的面积，然后累加得到任意多边形的面积。由于多边形点的个数是至少3个，所以我们还要比测距多一个结束注册事件，可以双击结束，也可以右击结束。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">// 注册鼠标左击事件</span><br><span class="line">viewer.screenSpaceEventHandler.setInputAction(function (clickEvent) &#123;</span><br><span class="line">	var cartesian = viewer.scene.pickPosition(clickEvent.position);</span><br><span class="line">	if (positions.length == 0) &#123;</span><br><span class="line">		positions.push(cartesian.clone()); //鼠标左击 添加第1个点</span><br><span class="line">		addPoint(cartesian);</span><br><span class="line">		// 注册鼠标移动事件</span><br><span class="line">	&#125; else if (positions.length == 2) &#123;</span><br><span class="line">		positions.pop();</span><br><span class="line">		positions.push(cartesian.clone()); // 鼠标左击 添加第2个点</span><br><span class="line">		addPoint(cartesian);</span><br><span class="line">		addPolyGon(positions); // 绘制面</span><br><span class="line">		// 注册鼠标右击结束事件</span><br><span class="line"></span><br><span class="line">	&#125; else if (positions.length &gt;= 3) &#123;</span><br><span class="line">		positions.pop();</span><br><span class="line">		positions.push(cartesian.clone()); // 鼠标左击 添加第3个点</span><br><span class="line">		addPoint(cartesian);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;, Cesium.ScreenSpaceEventType.LEFT_CLICK);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// 注册鼠标移动事件</span><br><span class="line">viewer.screenSpaceEventHandler.setInputAction(function (moveEvent) &#123;</span><br><span class="line">	var movePosition = viewer.scene.pickPosition(moveEvent.endPosition);</span><br><span class="line">	if (positions.length == 1) &#123;</span><br><span class="line">		positions.push(movePosition);</span><br><span class="line">		addLine(positions);</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		positions.pop();</span><br><span class="line">		positions.push(movePosition);</span><br><span class="line">	&#125;</span><br><span class="line">	if (positions.length &gt;= 3) &#123;</span><br><span class="line">		var text = &quot;面积：&quot; + getArea(positions);</span><br><span class="line">		// 获取面积的重心</span><br><span class="line">		var centerPoint = getCenterOfGravityPoint(positions);</span><br><span class="line">		// 绘制label</span><br><span class="line">		addLabel(centerPoint, text);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;, Cesium.ScreenSpaceEventType.MOUSE_MOVE);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">// 注册鼠标右击结束事件</span><br><span class="line">viewer.screenSpaceEventHandler.setInputAction(function (clickEvent) &#123;</span><br><span class="line"></span><br><span class="line">	var clickPosition = viewer.scene.pickPosition(clickEvent.position);</span><br><span class="line">	positions.pop();</span><br><span class="line">	positions.push(clickPosition);</span><br><span class="line">	positions.push(positions[0]); // 闭合</span><br><span class="line">	addPoint(clickPosition);</span><br><span class="line"></span><br><span class="line">	// 解除注册的事件</span><br><span class="line"></span><br><span class="line">&#125;, Cesium.ScreenSpaceEventType.RIGHT_CLICK);</span><br></pre></td></tr></table></figure>
+
+<h2 id="测高"><a href="#测高" class="headerlink" title="测高"></a>测高</h2><hr>
+<p>测高即是在测距的基础上，计算两个点之间的空间高度，这个是对测距的一个功能扩展。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">// 注册鼠标左击事件</span><br><span class="line">viewer.screenSpaceEventHandler.setInputAction(function (clickEvent) &#123;</span><br><span class="line">	var cartesian = viewer.scene.pickPosition(clickEvent.position); // 坐标</span><br><span class="line"></span><br><span class="line">	// 存储第一个点</span><br><span class="line">	if (positions.length == 0) &#123;</span><br><span class="line">		positions.push(cartesian.clone());</span><br><span class="line">		addPoint(cartesian);</span><br><span class="line">		// 注册鼠标移动事件</span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		// 存储第二个点</span><br><span class="line">		positions.pop();</span><br><span class="line">		positions.pop();</span><br><span class="line">		positions.pop();</span><br><span class="line">		var cartographic = Cesium.Cartographic.fromCartesian(cartesian);</span><br><span class="line">		var height = Cesium.Cartographic.fromCartesian(positions[0]).height;</span><br><span class="line">		// 得到辅助点</span><br><span class="line">		var verticalPoint = Cesium.Cartesian3.fromDegrees(Cesium.Math.toDegrees(cartographic.longitude), Cesium.Math.toDegrees(cartographic.latitude), height);</span><br><span class="line">		positions.push(verticalPoint);</span><br><span class="line">		positions.push(cartesian);</span><br><span class="line">		positions.push(positions[0]);</span><br><span class="line">		addPoint(cartesian);</span><br><span class="line">		// 移除所有注册的事件</span><br><span class="line">	&#125;</span><br><span class="line">&#125;, Cesium.ScreenSpaceEventType.LEFT_CLICK);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">// 注册鼠标移动事件</span><br><span class="line">viewer.screenSpaceEventHandler.setInputAction(function (moveEvent) &#123;</span><br><span class="line">	var movePosition = viewer.scene.pickPosition(moveEvent.endPosition); // 鼠标移动的点</span><br><span class="line">	if (positions.length &gt;= 2) &#123;</span><br><span class="line">		positions.pop();</span><br><span class="line">		positions.pop();</span><br><span class="line">		positions.pop();</span><br><span class="line"></span><br><span class="line">		var cartographic = Cesium.Cartographic.fromCartesian(movePosition);</span><br><span class="line">		var height = Cesium.Cartographic.fromCartesian(positions[0]).height;</span><br><span class="line"></span><br><span class="line">		// 辅助点</span><br><span class="line">		var verticalPoint = Cesium.Cartesian3.fromDegrees(Cesium.Math.toDegrees(cartographic.longitude), Cesium.Math.toDegrees(cartographic.latitude), height);</span><br><span class="line">		positions.push(verticalPoint);</span><br><span class="line">		positions.push(movePosition);</span><br><span class="line">		positions.push(positions[0]);</span><br><span class="line"></span><br><span class="line">		// 计算中点</span><br><span class="line">		var centerPoint_1 = Cesium.Cartesian3.midpoint(positions[0], positions[1], new Cesium.Cartesian3());</span><br><span class="line">		// 计算距离</span><br><span class="line">		var lengthText_1 = &quot;水平距离：&quot; + getLengthText(positions[0], positions[1]);</span><br><span class="line"></span><br><span class="line">		addLabel(centerPoint_1, lengthText_1);</span><br><span class="line"></span><br><span class="line">		// 计算中点</span><br><span class="line">		var centerPoint_2 = Cesium.Cartesian3.midpoint(positions[1], positions[2], new Cesium.Cartesian3());</span><br><span class="line">		// 计算距离</span><br><span class="line">		var lengthText_2 = &quot;垂直距离：&quot; + getLengthText(positions[1], positions[2]);</span><br><span class="line"></span><br><span class="line">		addLabel(centerPoint_2, lengthText_2);</span><br><span class="line"></span><br><span class="line">		// 计算中点</span><br><span class="line">		var centerPoint_3 = Cesium.Cartesian3.midpoint(positions[2], positions[3], new Cesium.Cartesian3());</span><br><span class="line">		// 计算距离</span><br><span class="line">		var lengthText_3 = &quot;直线距离：&quot; + getLengthText(positions[2], positions[3]);</span><br><span class="line"></span><br><span class="line">		addLabel(centerPoint_3, lengthText_3);</span><br><span class="line"></span><br><span class="line">	&#125; else &#123;</span><br><span class="line">		var verticalPoint = new Cesium.Cartesian3(movePosition.x, movePosition.y, positions[0].z);</span><br><span class="line">		positions.push(verticalPoint);</span><br><span class="line">		positions.push(movePosition);</span><br><span class="line">		positions.push(positions[0]);</span><br><span class="line">		// 绘制线</span><br><span class="line">		addLine(positions);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;, Cesium.ScreenSpaceEventType.MOUSE_MOVE);</span><br></pre></td></tr></table></figure>
+
+<p>##注意</p>
+<hr>
+<p>当然，上面给出的代码只是思路性的代码，其中还有一些要注意的，比如Entity和Label的显示控制啊，Polyline、Polygon、以及Point的动态刷新实时绘制，还有所有entity的在viewer容器中的控制等等，需要进一步完善。</p>
+<p><strong>补充</strong>：本来这篇文章只是想给一个测量思路，由于太多订阅者联系我，让我提供一下源码，所以，在这里还是把代码放出来，当然，如果遇到版本不兼容或者有功能性错误的，可以联系我。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.kfgis.site/blog/2019/10/08/celiang/" data-id="ck1hpqo1d0003rok8rwrv4c79" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Cesium/">Cesium</a></li><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/测量/">测量</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2019/10/08/poumianfenxi/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Cesium-剖面分析</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cesium/">Cesium</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/剖面分析/">剖面分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/地形开挖/">地形开挖</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测量/">测量</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通视分析/">通视分析</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Cesium/" style="font-size: 20px;">Cesium</a> <a href="/tags/剖面分析/" style="font-size: 10px;">剖面分析</a> <a href="/tags/地形开挖/" style="font-size: 10px;">地形开挖</a> <a href="/tags/测量/" style="font-size: 10px;">测量</a> <a href="/tags/通视分析/" style="font-size: 10px;">通视分析</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/10/08/celiang/">Cesium-测量</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/08/poumianfenxi/">Cesium-剖面分析</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/08/tongshifenxi/">Cesium-通视分析</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/08/dixingkaiwa2/">Cesium-地形开挖-任意多边形开挖</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 咖啡GIS<br>
+      <p>关于博主：咖啡GIS，12年毕业于武汉理工大学GIS专业，毕业后一直从事WebGIS二、三维开发，熟悉LeafLet、OpenLaryes、Cesium等开源框架，在GIS数据采集、制作、项目开发方面有一定的项目经验，并从事过房产、气象、智慧社区等行业，有咨询、交流、合作请联系博主QQ：2034146498</p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">所有文章</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
