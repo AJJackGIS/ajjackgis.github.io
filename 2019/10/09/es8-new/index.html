@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>ES8新特性一览（转） | 咖啡GIS的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="async/await Object.values() Object.entries() String padding: padStart()和padEnd()，填充字符串达到当前长度 函数参数列表结尾允许逗号 Object.getOwnPropertyDescriptors() ShareArrayBuffer和Atomics对象，用于从共享内存位置读取和写入  1.async/awaitES">
+<meta name="keywords" content="ES">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ES8新特性一览（转）">
+<meta property="og:url" content="http://www.kfgis.site/2019/10/09/es8-new/index.html">
+<meta property="og:site_name" content="咖啡GIS的个人博客">
+<meta property="og:description" content="async/await Object.values() Object.entries() String padding: padStart()和padEnd()，填充字符串达到当前长度 函数参数列表结尾允许逗号 Object.getOwnPropertyDescriptors() ShareArrayBuffer和Atomics对象，用于从共享内存位置读取和写入  1.async/awaitES">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-09T06:40:28.617Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ES8新特性一览（转）">
+<meta name="twitter:description" content="async/await Object.values() Object.entries() String padding: padStart()和padEnd()，填充字符串达到当前长度 函数参数列表结尾允许逗号 Object.getOwnPropertyDescriptors() ShareArrayBuffer和Atomics对象，用于从共享内存位置读取和写入  1.async/awaitES">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">咖啡GIS的个人博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">主页</a>
+        
+          <a class="main-nav-link" href="/archives">所有文章</a>
+        
+        <a class="main-nav-link" href="./works">作品</a>
+      </nav>
+      <nav id="sub-nav">
+        
+        
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.kfgis.site"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-es8-new" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/09/es8-new/" class="article-date">
+  <time datetime="2019-10-09T04:16:38.000Z" itemprop="datePublished">2019-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ES8新特性一览（转）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>async/await</li>
+<li>Object.values()</li>
+<li>Object.entries()</li>
+<li>String padding: padStart()和padEnd()，填充字符串达到当前长度</li>
+<li>函数参数列表结尾允许逗号</li>
+<li>Object.getOwnPropertyDescriptors()</li>
+<li>ShareArrayBuffer和Atomics对象，用于从共享内存位置读取和写入</li>
+</ul>
+<h1 id="1-async-await"><a href="#1-async-await" class="headerlink" title="1.async/await"></a>1.async/await</h1><p>ES2018引入异步迭代器（asynchronous iterators），这就像常规迭代器，除了next()方法返回一个Promise。因此await可以和for…of循环一起使用，以串行的方式运行异步操作。例如：</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">async function process(array) &#123;</span><br><span class="line">  for await (let i of array) &#123;</span><br><span class="line">    doSomething(i);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">例：</span><br><span class="line"></span><br><span class="line">function add(num) &#123;</span><br><span class="line">  return new Promise(resolve =&gt; &#123;</span><br><span class="line">    resolve(num+1);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br><span class="line">async function test() &#123;</span><br><span class="line">  var result = await add(1);</span><br><span class="line">  console.log(result);</span><br><span class="line">&#125;</span><br><span class="line">test();</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-Object-values"><a href="#2-Object-values" class="headerlink" title="2.Object.values()"></a>2.Object.values()</h1><p>Object.values()是一个与Object.keys()类似的新函数，但返回的是Object自身属性的所有值，不包括继承的值。</p>
+<p>假设我们要遍历如下对象obj的所有值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const obj = &#123;a: 1, b: 2, c: 3&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>不使用Object.values() :ES7</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const vals = Object.keys(obj).map(key =&gt; obj[key]);</span><br><span class="line">console.log(vals);//[1, 2, 3]</span><br></pre></td></tr></table></figure>
+
+<p>使用Object.values() :ES8</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const values = Object.values(obj);</span><br><span class="line">console.log(values);//[1, 2, 3]</span><br></pre></td></tr></table></figure>
+
+<p>从上述代码中可以看出Object.values()为我们省去了遍历key，并根据这些key获取value的步骤。</p>
+<h1 id="3-Object-entries"><a href="#3-Object-entries" class="headerlink" title="3.Object.entries()"></a>3.Object.entries()</h1><p>Object.entries()函数返回一个给定对象自身可枚举属性的键值对的数组。</p>
+<p>接下来我们来遍历上文中的obj对象的所有属性的key和value：</p>
+<p>不使用Object.entries() :ES7</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Object.keys(obj).forEach(key=&gt;&#123;</span><br><span class="line">	console.log(&apos;key:&apos;+key+&apos; value:&apos;+obj[key]);</span><br><span class="line">&#125;)</span><br><span class="line">//key:a value:1</span><br><span class="line">//key:b value:2</span><br><span class="line">//key:c value:3</span><br></pre></td></tr></table></figure>
+
+<p>使用Object.entries() :ES8</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">//Object.entries(obj) = </span><br><span class="line">//[</span><br><span class="line">//  [&quot;a&quot;, 1]</span><br><span class="line">//  [&quot;b&quot;, 2]</span><br><span class="line">//  [&quot;c&quot;, 3]</span><br><span class="line">//]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">for(let [key,value] of Object.entries(obj))&#123;</span><br><span class="line">	console.log(`key: $&#123;key&#125; value:$&#123;value&#125;`)</span><br><span class="line">&#125;</span><br><span class="line">//key:a value:1</span><br><span class="line">//key:b value:2</span><br><span class="line">//key:c value:3</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-String-padding"><a href="#4-String-padding" class="headerlink" title="4.String padding"></a>4.String padding</h1><p>在ES8中String新增了两个实例函数String.prototype.padStart和String.prototype.padEnd，允许将空字符串或其他字符串添加到原始字符串的开头或结尾。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">String.padStart(targetLength,[padString])</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>targetLength:当前字符串需要填充到的目标长度。如果这个数值小于当前字符串的长度，则返回当前字符串本身。</li>
+<li>padString:(可选)填充字符串。如果字符串太长，使填充后的字符串长度超过了目标长度，则只保留最左侧的部分，其他部分会被截断，此参数的缺省值为 “ “。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">console.log(&apos;aa&apos;.padStart(4,&apos;0&apos;)) //00aa    </span><br><span class="line">console.log(&apos;aa&apos;.padEnd(4,&apos;0&apos;))//aa00</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-函数参数列表结尾允许逗号"><a href="#5-函数参数列表结尾允许逗号" class="headerlink" title="5.函数参数列表结尾允许逗号"></a>5.函数参数列表结尾允许逗号</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var f = function(a,b,) &#123;&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-Object-getOwnPropertyDescriptors"><a href="#6-Object-getOwnPropertyDescriptors" class="headerlink" title="6.Object.getOwnPropertyDescriptors()"></a>6.Object.getOwnPropertyDescriptors()</h1><p>Object.getOwnPropertyDescriptors()函数用来获取一个对象的所有自身属性的描述符,如果没有任何自身属性，则返回空对象。</p>
+<p>函数原型：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Object.getOwnPropertyDescriptors(obj)</span><br></pre></td></tr></table></figure>
+
+<p>返回obj对象的所有自身属性的描述符，如果没有任何自身属性，则返回空对象。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">const obj2 = &#123;</span><br><span class="line">	name: &apos;Jine&apos;,</span><br><span class="line">	get age() &#123; return &apos;18&apos; &#125;</span><br><span class="line">&#125;;</span><br><span class="line">Object.getOwnPropertyDescriptors(obj2)</span><br><span class="line">// &#123;</span><br><span class="line">//   age: &#123;</span><br><span class="line">//     configurable: true,</span><br><span class="line">//     enumerable: true,</span><br><span class="line">//     get: function age()&#123;&#125;, //the getter function</span><br><span class="line">//     set: undefined</span><br><span class="line">//   &#125;,</span><br><span class="line">//   name: &#123;</span><br><span class="line">//     configurable: true,</span><br><span class="line">//     enumerable: true,</span><br><span class="line">//		value:&quot;Jine&quot;,</span><br><span class="line">//		writable:true</span><br><span class="line">//   &#125;</span><br><span class="line">// &#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="7-SharedArrayBuffer对象"><a href="#7-SharedArrayBuffer对象" class="headerlink" title="7.SharedArrayBuffer对象"></a>7.SharedArrayBuffer对象</h1><p>相关阅读：</p>
+<ul>
+<li><a href="https://segmentfault.com/a/1190000009878588" target="_blank" rel="noopener">https://segmentfault.com/a/1190000009878588</a></li>
+<li><a href="https://segmentfault.com/a/1190000009878632" target="_blank" rel="noopener">https://segmentfault.com/a/1190000009878632</a></li>
+<li><a href="https://segmentfault.com/a/1190000009878699" target="_blank" rel="noopener">https://segmentfault.com/a/1190000009878699</a></li>
+</ul>
+<p>SharedArrayBuffer 对象用来表示一个通用的，固定长度的原始二进制数据缓冲区，类似于 ArrayBuffer 对象，它们都可以用来在共享内存（shared memory）上创建视图。与 ArrayBuffer 不同的是，SharedArrayBuffer 不能被分离。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/**</span><br><span class="line"> * </span><br><span class="line"> * @param &#123;*&#125; length 所创建的数组缓冲区的大小，以字节(byte)为单位。  </span><br><span class="line"> * @returns &#123;SharedArrayBuffer&#125; 一个大小指定的新 SharedArrayBuffer 对象。其内容被初始化为 0。</span><br><span class="line"> */</span><br><span class="line">new SharedArrayBuffer(length)</span><br></pre></td></tr></table></figure>
+
+<h1 id="8-Atomics对象"><a href="#8-Atomics对象" class="headerlink" title="8.Atomics对象"></a>8.Atomics对象</h1><p>Atomics 对象提供了一组静态方法用来对 SharedArrayBuffer 对象进行原子操作。</p>
+<p>这些原子操作属于 Atomics 模块。与一般的全局对象不同，Atomics 不是构造函数，因此不能使用 new 操作符调用，也不能将其当作函数直接调用。Atomics 的所有属性和方法都是静态的（与 Math  对象一样）。</p>
+<p>多个共享内存的线程能够同时读写同一位置上的数据。原子操作会确保正在读或写的数据的值是符合预期的，即下一个原子操作一定会在上一个原子操作结束后才会开始，其操作过程不会中断。</p>
+<ul>
+<li><p>Atomics.add()<br>将指定位置上的数组元素与给定的值相加，并返回相加前该元素的值。</p>
+</li>
+<li><p>Atomics.and()<br>将指定位置上的数组元素与给定的值相与，并返回与操作前该元素的值。</p>
+</li>
+<li><p>Atomics.compareExchange()<br>如果数组中指定的元素与给定的值相等，则将其更新为新的值，并返回该元素原先的值。</p>
+</li>
+<li><p>Atomics.exchange()<br>将数组中指定的元素更新为给定的值，并返回该元素更新前的值。</p>
+</li>
+<li><p>Atomics.load()<br>返回数组中指定元素的值。</p>
+</li>
+<li><p>Atomics.or()<br>将指定位置上的数组元素与给定的值相或，并返回或操作前该元素的值。</p>
+</li>
+<li><p>Atomics.store()<br>将数组中指定的元素设置为给定的值，并返回该值。</p>
+</li>
+<li><p>Atomics.sub()<br>将指定位置上的数组元素与给定的值相减，并返回相减前该元素的值。</p>
+</li>
+<li><p>Atomics.xor()<br>将指定位置上的数组元素与给定的值相异或，并返回异或操作前该元素的值。</p>
+</li>
+</ul>
+<p>wait() 和 wake() 方法采用的是 Linux 上的 futexes 模型（fast user-space mutex，快速用户空间互斥量），可以让进程一直等待直到某个特定的条件为真，主要用于实现阻塞。</p>
+<ul>
+<li><p>Atomics.wait()<br>检测数组中某个指定位置上的值是否仍然是给定值，是则保持挂起直到被唤醒或超时。返回值为 “ok”、”not-equal” 或 “time-out”。调用时，如果当前线程不允许阻塞，则会抛出异常（大多数浏览器都不允许在主线程中调用 wait()）。</p>
+</li>
+<li><p>Atomics.wake()<br>唤醒等待队列中正在数组指定位置的元素上等待的线程。返回值为成功唤醒的线程数量。</p>
+</li>
+<li><p>Atomics.isLockFree(size)<br>可以用来检测当前系统是否支持硬件级的原子操作。对于指定大小的数组，如果当前系统支持硬件级的原子操作，则返回 true；否则就意味着对于该数组，Atomics 对象中的各原子操作都只能用锁来实现。此函数面向的是技术专家。</p>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.kfgis.site/2019/10/09/es8-new/" data-id="ck1ixhvsn000axck85v7sqxh8" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ES/">ES</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/10/09/es9-new/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ES9新特性一览（转）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/10/09/es7-new/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ES7新特性一览（转）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cesium/">Cesium</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES/">ES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/剖面分析/">剖面分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/地形开挖/">地形开挖</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测量/">测量</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通视分析/">通视分析</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Cesium/" style="font-size: 15px;">Cesium</a> <a href="/tags/ES/" style="font-size: 20px;">ES</a> <a href="/tags/剖面分析/" style="font-size: 10px;">剖面分析</a> <a href="/tags/地形开挖/" style="font-size: 10px;">地形开挖</a> <a href="/tags/测量/" style="font-size: 10px;">测量</a> <a href="/tags/通视分析/" style="font-size: 10px;">通视分析</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/10/09/es10-new/">ES10新特性一览（转）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/es9-new/">ES9新特性一览（转）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/es8-new/">ES8新特性一览（转）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/es7-new/">ES7新特性一览（转）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/es6-new/">ES6新特性一览（转）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 咖啡GIS<br>
+      <p>关于博主：咖啡GIS，12年毕业于武汉理工大学GIS专业，毕业后一直从事WebGIS二、三维开发，熟悉LeafLet、OpenLaryes、Cesium等开源框架，在GIS数据采集、制作、项目开发方面有一定的项目经验，并从事过房产、气象、智慧社区等行业，有咨询、交流、合作请联系博主QQ：2034146498</p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">所有文章</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

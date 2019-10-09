@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>ES9新特性一览（转） | 咖啡GIS的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="异步迭代 Promise.finally() Rest/Spread 属性 正则表达式命名捕获组（Regular Expression Named Capture Groups） 正则表达式反向断言（lookbehind） 正则表达式dotAll模式 正则表达式 Unicode 转义 非转义序列的模板字符串  1.异步迭代在async/await的某些时刻，你可能尝试在同步循环中调用异步函数。例">
+<meta name="keywords" content="ES">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ES9新特性一览（转）">
+<meta property="og:url" content="http://www.kfgis.site/2019/10/09/es9-new/index.html">
+<meta property="og:site_name" content="咖啡GIS的个人博客">
+<meta property="og:description" content="异步迭代 Promise.finally() Rest/Spread 属性 正则表达式命名捕获组（Regular Expression Named Capture Groups） 正则表达式反向断言（lookbehind） 正则表达式dotAll模式 正则表达式 Unicode 转义 非转义序列的模板字符串  1.异步迭代在async/await的某些时刻，你可能尝试在同步循环中调用异步函数。例">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-09T07:05:00.017Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ES9新特性一览（转）">
+<meta name="twitter:description" content="异步迭代 Promise.finally() Rest/Spread 属性 正则表达式命名捕获组（Regular Expression Named Capture Groups） 正则表达式反向断言（lookbehind） 正则表达式dotAll模式 正则表达式 Unicode 转义 非转义序列的模板字符串  1.异步迭代在async/await的某些时刻，你可能尝试在同步循环中调用异步函数。例">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">咖啡GIS的个人博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">主页</a>
+        
+          <a class="main-nav-link" href="/archives">所有文章</a>
+        
+        <a class="main-nav-link" href="./works">作品</a>
+      </nav>
+      <nav id="sub-nav">
+        
+        
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.kfgis.site"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-es9-new" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/09/es9-new/" class="article-date">
+  <time datetime="2019-10-09T06:41:51.000Z" itemprop="datePublished">2019-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ES9新特性一览（转）
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ul>
+<li>异步迭代</li>
+<li>Promise.finally()</li>
+<li>Rest/Spread 属性</li>
+<li>正则表达式命名捕获组（Regular Expression Named Capture Groups）</li>
+<li>正则表达式反向断言（lookbehind）</li>
+<li>正则表达式dotAll模式</li>
+<li>正则表达式 Unicode 转义</li>
+<li>非转义序列的模板字符串</li>
+</ul>
+<h1 id="1-异步迭代"><a href="#1-异步迭代" class="headerlink" title="1.异步迭代"></a>1.异步迭代</h1><p>在async/await的某些时刻，你可能尝试在同步循环中调用异步函数。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">async function process(array) &#123;</span><br><span class="line">  for (let i of array) &#123;</span><br><span class="line">    await doSomething(i);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<a id="more"></a>
+
+<p>这段代码不会正常运行，下面这段同样也不会：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">async function process(array) &#123;</span><br><span class="line">  array.forEach(async i =&gt; &#123;</span><br><span class="line">    await doSomething(i);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这段代码中，循环本身依旧保持同步，并在在内部异步函数之前全部调用完成。</p>
+<p>ES2018引入异步迭代器（asynchronous iterators），这就像常规迭代器，除了next()方法返回一个Promise。因此await可以和for…of循环一起使用，以串行的方式运行异步操作。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">async function process(array) &#123;</span><br><span class="line">  for await (let i of array) &#123;</span><br><span class="line">    doSomething(i);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-Promise-finally"><a href="#2-Promise-finally" class="headerlink" title="2.Promise.finally()"></a>2.Promise.finally()</h1><p>一个Promise调用链要么成功到达最后一个.then()，要么失败触发.catch()。在某些情况下，你想要在无论Promise运行成功还是失败，运行相同的代码，例如清除，删除对话，关闭数据库连接等。</p>
+<p>.finally()允许你指定最终的逻辑：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function doSomething() &#123;</span><br><span class="line">  doSomething1()</span><br><span class="line">  .then(doSomething2)</span><br><span class="line">  .then(doSomething3)</span><br><span class="line">  .catch(err =&gt; &#123;</span><br><span class="line">    console.log(err);</span><br><span class="line">  &#125;)</span><br><span class="line">  .finally(() =&gt; &#123;</span><br><span class="line">    // finish here!</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="3-Rest-Spread-属性"><a href="#3-Rest-Spread-属性" class="headerlink" title="3.Rest/Spread 属性"></a>3.Rest/Spread 属性</h1><p>ES2015引入了Rest参数和扩展运算符。三个点（…）仅用于数组。Rest参数语法允许我们将一个不定数量的参数表示为一个数组。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">restParam(1, 2, 3, 4, 5);</span><br><span class="line"></span><br><span class="line">function restParam(p1, p2, ...p3) &#123;</span><br><span class="line">  // p1 = 1</span><br><span class="line">  // p2 = 2</span><br><span class="line">  // p3 = [3, 4, 5]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>展开操作符以相反的方式工作，将数组转换成可传递给函数的单独参数。例如Math.max()返回给定数字中的最大值：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const values = [99, 100, -1, 48, 16];</span><br><span class="line">console.log( Math.max(...values) ); // 100</span><br></pre></td></tr></table></figure>
+
+<p>ES2018为对象解构提供了和数组一样的Rest参数（）和展开操作符，一个简单的例子：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const myObject = &#123;</span><br><span class="line">  a: 1,</span><br><span class="line">  b: 2,</span><br><span class="line">  c: 3</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">const &#123; a, ...x &#125; = myObject;</span><br><span class="line">// a = 1</span><br><span class="line">// x = &#123; b: 2, c: 3 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>或者你可以使用它给函数传递参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">restParam(&#123;</span><br><span class="line">  a: 1,</span><br><span class="line">  b: 2,</span><br><span class="line">  c: 3</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">function restParam(&#123; a, ...x &#125;) &#123;</span><br><span class="line">  // a = 1</span><br><span class="line">  // x = &#123; b: 2, c: 3 &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>跟数组一样，Rest参数只能在声明的结尾处使用。此外，它只适用于每个对象的顶层，如果对象中嵌套对象则无法适用。</p>
+<p>扩展运算符可以在其他对象内使用，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const obj1 = &#123; a: 1, b: 2, c: 3 &#125;;</span><br><span class="line">const obj2 = &#123; ...obj1, z: 26 &#125;;</span><br><span class="line">// obj2 is &#123; a: 1, b: 2, c: 3, z: 26 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以使用扩展运算符拷贝一个对象，像是这样obj2 = {…obj1}，但是 这只是一个对象的浅拷贝。另外，如果一个对象A的属性是对象B，那么在克隆后的对象cloneB中，该属性指向对象B。</p>
+<h1 id="4-正则表达式命名捕获组"><a href="#4-正则表达式命名捕获组" class="headerlink" title="4.正则表达式命名捕获组"></a>4.正则表达式命名捕获组</h1><p>JavaScript正则表达式可以返回一个匹配的对象——一个包含匹配字符串的类数组，例如：以YYYY-MM-DD的格式解析日期：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const</span><br><span class="line">  reDate = /([0-9]&#123;4&#125;)-([0-9]&#123;2&#125;)-([0-9]&#123;2&#125;)/,</span><br><span class="line">  match  = reDate.exec(&apos;2018-04-30&apos;),</span><br><span class="line">  year   = match[1], // 2018</span><br><span class="line">  month  = match[2], // 04</span><br><span class="line">  day    = match[3]; // 30</span><br></pre></td></tr></table></figure>
+
+<p>这样的代码很难读懂，并且改变正则表达式的结构有可能改变匹配对象的索引。</p>
+<p>ES2018允许命名捕获组使用符号?<name>，在打开捕获括号(后立即命名，示例如下：</name></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const</span><br><span class="line">  reDate = /(?&lt;year&gt;[0-9]&#123;4&#125;)-(?&lt;month&gt;[0-9]&#123;2&#125;)-(?&lt;day&gt;[0-9]&#123;2&#125;)/,</span><br><span class="line">  match  = reDate.exec(&apos;2018-04-30&apos;),</span><br><span class="line">  year   = match.groups.year,  // 2018</span><br><span class="line">  month  = match.groups.month, // 04</span><br><span class="line">  day    = match.groups.day;   // 30</span><br></pre></td></tr></table></figure>
+
+<p>任何匹配失败的命名组都将返回undefined。</p>
+<p>命名捕获也可以使用在replace()方法中。例如将日期转换为美国的 MM-DD-YYYY 格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const</span><br><span class="line">  reDate = /(?&lt;year&gt;[0-9]&#123;4&#125;)-(?&lt;month&gt;[0-9]&#123;2&#125;)-(?&lt;day&gt;[0-9]&#123;2&#125;)/,</span><br><span class="line">  d      = &apos;2018-04-30&apos;,</span><br><span class="line">  usDate = d.replace(reDate, &apos;$&lt;month&gt;-$&lt;day&gt;-$&lt;year&gt;&apos;);</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-正则表达式反向断言"><a href="#5-正则表达式反向断言" class="headerlink" title="5.正则表达式反向断言"></a>5.正则表达式反向断言</h1><p>目前JavaScript在正则表达式中支持先行断言（lookahead）。这意味着匹配会发生，但不会有任何捕获，并且断言没有包含在整个匹配字段中。例如从价格中捕获货币符号：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const</span><br><span class="line">  reLookahead = /\D(?=\d+)/,</span><br><span class="line">  match       = reLookahead.exec(&apos;$123.89&apos;);</span><br><span class="line"></span><br><span class="line">console.log( match[0] ); // $</span><br></pre></td></tr></table></figure>
+
+<p>ES2018引入以相同方式工作但是匹配前面的反向断言（lookbehind），这样我就可以忽略货币符号，单纯的捕获价格的数字：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const</span><br><span class="line">  reLookbehind = /(?&lt;=\D)\d+/,</span><br><span class="line">  match        = reLookbehind.exec(&apos;$123.89&apos;);</span><br><span class="line"></span><br><span class="line">console.log( match[0] ); // 123.89</span><br></pre></td></tr></table></figure>
+
+<p>以上是 肯定反向断言，非数字\D必须存在。同样的，还存在 否定反向断言，表示一个值必须不存在，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const</span><br><span class="line">  reLookbehindNeg = /(?&lt;!\D)\d+/,</span><br><span class="line">  match           = reLookbehind.exec(&apos;$123.89&apos;);</span><br><span class="line"></span><br><span class="line">console.log( match[0] ); // null</span><br></pre></td></tr></table></figure>
+
+<h1 id="6-正则表达式dotAll模式"><a href="#6-正则表达式dotAll模式" class="headerlink" title="6.正则表达式dotAll模式"></a>6.正则表达式dotAll模式</h1><p>正则表达式中点.匹配除回车外的任何单字符，标记s改变这种行为，允许行终止符的出现，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">/hello.world/.test(&apos;hello\nworld&apos;);  // false</span><br><span class="line">/hello.world/s.test(&apos;hello\nworld&apos;); // true</span><br></pre></td></tr></table></figure>
+
+<h1 id="7-正则表达式-Unicode-转义"><a href="#7-正则表达式-Unicode-转义" class="headerlink" title="7.正则表达式 Unicode 转义"></a>7.正则表达式 Unicode 转义</h1><p>到目前为止，在正则表达式中本地访问 Unicode 字符属性是不被允许的。ES2018添加了 Unicode 属性转义——形式为\p{…}和\P{…}，在正则表达式中使用标记 u (unicode) 设置，在\p块儿内，可以以键值对的方式设置需要匹配的属性而非具体内容。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const reGreekSymbol = /\p&#123;Script=Greek&#125;/u;</span><br><span class="line">reGreekSymbol.test(&apos;π&apos;); // true</span><br></pre></td></tr></table></figure>
+
+<p>此特性可以避免使用特定 Unicode 区间来进行内容类型判断，提升可读性和可维护性。</p>
+<h1 id="8-非转义序列的模板字符串"><a href="#8-非转义序列的模板字符串" class="headerlink" title="8.非转义序列的模板字符串"></a>8.非转义序列的模板字符串</h1><p>之前，\u开始一个 unicode 转义，\x开始一个十六进制转义，\后跟一个数字开始一个八进制转义。这使得创建特定的字符串变得不可能，例如Windows文件路径 C:\uuu\xxx\111。更多细节参考模板字符串。</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.kfgis.site/2019/10/09/es9-new/" data-id="ck1ixhvso000cxck8yah5rw0y" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ES/">ES</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/10/09/es10-new/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ES10新特性一览（转）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/10/09/es8-new/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">ES8新特性一览（转）</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cesium/">Cesium</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES/">ES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/剖面分析/">剖面分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/地形开挖/">地形开挖</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测量/">测量</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通视分析/">通视分析</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Cesium/" style="font-size: 15px;">Cesium</a> <a href="/tags/ES/" style="font-size: 20px;">ES</a> <a href="/tags/剖面分析/" style="font-size: 10px;">剖面分析</a> <a href="/tags/地形开挖/" style="font-size: 10px;">地形开挖</a> <a href="/tags/测量/" style="font-size: 10px;">测量</a> <a href="/tags/通视分析/" style="font-size: 10px;">通视分析</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/10/09/es10-new/">ES10新特性一览（转）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/es9-new/">ES9新特性一览（转）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/es8-new/">ES8新特性一览（转）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/es7-new/">ES7新特性一览（转）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/es6-new/">ES6新特性一览（转）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 咖啡GIS<br>
+      <p>关于博主：咖啡GIS，12年毕业于武汉理工大学GIS专业，毕业后一直从事WebGIS二、三维开发，熟悉LeafLet、OpenLaryes、Cesium等开源框架，在GIS数据采集、制作、项目开发方面有一定的项目经验，并从事过房产、气象、智慧社区等行业，有咨询、交流、合作请联系博主QQ：2034146498</p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">所有文章</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>

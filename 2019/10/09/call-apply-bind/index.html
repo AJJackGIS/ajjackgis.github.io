@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+
+  
+  <title>javascript中apply、call和bind的区别(转) | 咖啡GIS的个人博客</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="转载于：https://www.cnblogs.com/cosiray/p/4512969.html 在JS中，这三者都是用来改变函数的this对象的指向的，他们有什么样的区别呢。 在说区别之前还是先总结一下三者的相似之处：1、都是用来改变函数的this对象的指向的。2、第一个参数都是this要指向的对象。3、都可以利用后续参数传参。 那么他们的区别在哪里的，先看一个例子。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="javascript中apply、call和bind的区别(转)">
+<meta property="og:url" content="http://www.kfgis.site/2019/10/09/call-apply-bind/index.html">
+<meta property="og:site_name" content="咖啡GIS的个人博客">
+<meta property="og:description" content="转载于：https://www.cnblogs.com/cosiray/p/4512969.html 在JS中，这三者都是用来改变函数的this对象的指向的，他们有什么样的区别呢。 在说区别之前还是先总结一下三者的相似之处：1、都是用来改变函数的this对象的指向的。2、第一个参数都是this要指向的对象。3、都可以利用后续参数传参。 那么他们的区别在哪里的，先看一个例子。">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2019-10-09T02:07:35.180Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="javascript中apply、call和bind的区别(转)">
+<meta name="twitter:description" content="转载于：https://www.cnblogs.com/cosiray/p/4512969.html 在JS中，这三者都是用来改变函数的this对象的指向的，他们有什么样的区别呢。 在说区别之前还是先总结一下三者的相似之处：1、都是用来改变函数的this对象的指向的。2、第一个参数都是this要指向的对象。3、都可以利用后续参数传参。 那么他们的区别在哪里的，先看一个例子。">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+</html>
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">咖啡GIS的个人博客</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">主页</a>
+        
+          <a class="main-nav-link" href="/archives">所有文章</a>
+        
+        <a class="main-nav-link" href="./works">作品</a>
+      </nav>
+      <nav id="sub-nav">
+        
+        
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://www.kfgis.site"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-call-apply-bind" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/10/09/call-apply-bind/" class="article-date">
+  <time datetime="2019-10-09T01:59:05.000Z" itemprop="datePublished">2019-10-09</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      javascript中apply、call和bind的区别(转)
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>转载于：<a href="https://www.cnblogs.com/cosiray/p/4512969.html" target="_blank" rel="noopener">https://www.cnblogs.com/cosiray/p/4512969.html</a></p>
+<p>在JS中，这三者都是用来改变函数的this对象的指向的，他们有什么样的区别呢。</p>
+<p>在说区别之前还是先总结一下三者的相似之处：<br>1、都是用来改变函数的this对象的指向的。<br>2、第一个参数都是this要指向的对象。<br>3、都可以利用后续参数传参。</p>
+<p>那么他们的区别在哪里的，先看一个例子。</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var xw = &#123;</span><br><span class="line">  name : &quot;小王&quot;,</span><br><span class="line">  gender : &quot;男&quot;,</span><br><span class="line">  age : 24,</span><br><span class="line">  say : function() &#123;</span><br><span class="line">    alert(this.name + &quot; , &quot; + this.gender + &quot; ,今年&quot; + this.age);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">var xh = &#123;</span><br><span class="line">  name : &quot;小红&quot;,</span><br><span class="line">  gender : &quot;女&quot;,</span><br><span class="line">  age : 18</span><br><span class="line">&#125;</span><br><span class="line">xw.say();</span><br></pre></td></tr></table></figure>
+
+<p>本身没什么好说的，显示的肯定是小王 ， 男 ， 今年24。</p>
+<p>那么如何用xw的say方法来显示xh的数据呢。</p>
+<p>对于call可以这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xw.say.call(xh);</span><br></pre></td></tr></table></figure>
+
+<p>对于apply可以这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xw.say.apply(xh);</span><br></pre></td></tr></table></figure>
+
+<p>而对于bind来说需要这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xw.say.bind(xh)();</span><br></pre></td></tr></table></figure>
+
+<p>如果直接写xw.say.bind(xh)是不会有任何结果的，看到区别了吗？call和apply都是对函数的直接调用，而bind方法返回的仍然是一个函数，因此后面还需要()来进行调用才可以。</p>
+<p>那么call和apply有什么区别呢？我们把例子稍微改写一下。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var xw = &#123;</span><br><span class="line">  name : &quot;小王&quot;,</span><br><span class="line">  gender : &quot;男&quot;,</span><br><span class="line">  age : 24,</span><br><span class="line">  say : function(school,grade) &#123;</span><br><span class="line">    alert(this.name + &quot; , &quot; + this.gender + &quot; ,今年&quot; + this.age + </span><br><span class="line">      &quot; ,在&quot; + school + &quot;上&quot; + grade);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">  var xh = &#123;</span><br><span class="line">    name : &quot;小红&quot;,</span><br><span class="line">    gender : &quot;女&quot;,</span><br><span class="line">    age : 18</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+
+<p>可以看到say方法多了两个参数，我们通过call/apply的参数进行传参。</p>
+<p>对于call来说是这样的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xw.say.call(xh,&quot;实验小学&quot;,&quot;六年级&quot;);</span><br></pre></td></tr></table></figure>
+
+<p>而对于apply来说是这样的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xw.say.apply(xh,[&quot;实验小学&quot;,&quot;六年级&quot;]);</span><br></pre></td></tr></table></figure>
+
+<p>看到区别了吗，call后面的参数与say方法中是一一对应的，而apply的第二个参数是一个数组，数组中的元素是和say方法中一一对应的，这就是两者最大的区别。</p>
+<p>那么bind怎么传参呢？它可以像call那样传参。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xw.say.bind(xh,&quot;实验小学&quot;,&quot;六年级&quot;)();</span><br></pre></td></tr></table></figure>
+
+<p>但是由于bind返回的仍然是一个函数，所以我们还可以在调用的时候再进行传参。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xw.say.bind(xh)(&quot;实验小学&quot;,&quot;六年级&quot;);</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://www.kfgis.site/2019/10/09/call-apply-bind/" data-id="ck1ixhvsa0001xck8i8xpbmrg" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2019/10/09/es5-new/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          ES5新特性一览（转）
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2019/10/08/celiang/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Cesium-测量</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Cesium/">Cesium</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ES/">ES</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/剖面分析/">剖面分析</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/地形开挖/">地形开挖</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/测量/">测量</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/通视分析/">通视分析</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Cesium/" style="font-size: 15px;">Cesium</a> <a href="/tags/ES/" style="font-size: 20px;">ES</a> <a href="/tags/剖面分析/" style="font-size: 10px;">剖面分析</a> <a href="/tags/地形开挖/" style="font-size: 10px;">地形开挖</a> <a href="/tags/测量/" style="font-size: 10px;">测量</a> <a href="/tags/通视分析/" style="font-size: 10px;">通视分析</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/10/09/es10-new/">ES10新特性一览（转）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/es9-new/">ES9新特性一览（转）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/es8-new/">ES8新特性一览（转）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/es7-new/">ES7新特性一览（转）</a>
+          </li>
+        
+          <li>
+            <a href="/2019/10/09/es6-new/">ES6新特性一览（转）</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 咖啡GIS<br>
+      <p>关于博主：咖啡GIS，12年毕业于武汉理工大学GIS专业，毕业后一直从事WebGIS二、三维开发，熟悉LeafLet、OpenLaryes、Cesium等开源框架，在GIS数据采集、制作、项目开发方面有一定的项目经验，并从事过房产、气象、智慧社区等行业，有咨询、交流、合作请联系博主QQ：2034146498</p>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">主页</a>
+  
+    <a href="/archives" class="mobile-nav-link">所有文章</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
