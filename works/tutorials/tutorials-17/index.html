@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>专题应用-城市热力图（人员密度，房价分布）</title>
+  <script src="https://cesiumjs.org/releases/1.57/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesiumjs.org/releases/1.57/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <script src="./mapv.js"></script>
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #000000;
+    }
+
+    .cesium-widget-credits {
+      display: none;
+    }
+
+    .title {
+      position: absolute;
+      text-align: center;
+      margin: 0 auto;
+      font-size: 24px;
+      font-weight: bold;
+      z-index: 1;
+      width: 100%;
+      color: #fff;
+      top: 10px;
+    }
+
+    .controls {
+      position: absolute;
+      top: 50px;
+      left: 20px;
+      background-color: rgba(17, 17, 17, 0.7);
+      border-radius: 5px;
+      padding: 10px;
+      z-index: 1;
+      color: white;
+      font-size: 14px;
+    }
+  </style>
+  <script src="../../data/popular.js"></script>
+  <script src="../../data/prices.js"></script>
+</head>
+
+<body>
+<div class="title">专题应用-城市热力图（人员密度，房价分布）</div>
+<div id="cesiumContainer"></div>
+<div class="controls">
+
+  <fieldset>
+    <legend>数据类别</legend>
+    <button class="cesium-button">
+      <label>
+        <input type="radio" name="type" value="popular" onclick="changePopular()" checked> 全国第六次人口普查数据
+      </label>
+    </button>
+    <button class="cesium-button">
+      <label>
+        <input type="radio" name="type" value="price" onclick="changePrice()"> 北京市房价
+      </label>
+    </button>
+  </fieldset>
+
+  <fieldset>
+    <legend>展示方式</legend>
+    <button class="cesium-button" onclick="createSimple()">简单图</button>
+    <button class="cesium-button" onclick="createCategory()">分类图</button>
+    <button class="cesium-button" onclick="createIntensity()">密度图</button>
+    <button class="cesium-button" onclick="createHeatMap()">热力图</button>
+    <button class="cesium-button" onclick="createHoneycomb()">蜂巢图</button>
+    <button class="cesium-button" onclick="createGrid()">网格图</button>
+    <button class="cesium-button" onclick="createBubble()">气泡图</button>
+    <button class="cesium-button" onclick="createText()">文字图</button>
+  </fieldset>
+</div>
+<script src="index.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>城市建筑三维白膜数据的制作与效果展示</title>
+  <script src="https://cesiumjs.org/releases/1.57/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesiumjs.org/releases/1.57/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #000000;
+    }
+
+    .cesium-widget-credits {
+      display: none;
+    }
+
+    .title {
+      position: absolute;
+      text-align: center;
+      margin: 0 auto;
+      font-size: 24px;
+      font-weight: bold;
+      z-index: 1;
+      width: 100%;
+      color: #fff;
+      top: 10px;
+    }
+
+    .controls {
+      position: absolute;
+      top: 50px;
+      left: 20px;
+      background-color: rgba(17, 17, 17, 0.7);
+      border-radius: 5px;
+      padding: 10px;
+      z-index: 1;
+    }
+  </style>
+</head>
+
+<body>
+<div class="title">城市建筑三维白膜数据的制作与效果展示</div>
+<div id="cesiumContainer"></div>
+<div class="controls">
+  <button class="cesium-button" onclick="func_1()">默认样式</button>
+  <button class="cesium-button" onclick="func_2()">纯色</button>
+  <button class="cesium-button" onclick="func_3()">半透明</button>
+  <button class="cesium-button" onclick="func_4()">建筑高度</button>
+  <button class="cesium-button" onclick="func_5()">经度</button>
+  <button class="cesium-button" onclick="func_6()">纬度</button>
+</div>
+<script src="index.js"></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>地下管网-模型加载与数据显示</title>
+  <script src="https://cesiumjs.org/releases/1.57/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesiumjs.org/releases/1.57/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #000000;
+    }
+
+    .cesium-widget-credits {
+      display: none!important;
+    }
+    .cesium-credit-logoContainer{
+      display: none!important;
+    }
+
+    .title {
+      position: absolute;
+      text-align: center;
+      margin: 0 auto;
+      font-size: 24px;
+      font-weight: bold;
+      z-index: 1;
+      width: 100%;
+      color: #fff;
+      top: 10px;
+    }
+
+    .controls {
+      position: absolute;
+      top: 50px;
+      left: 20px;
+      background-color: rgba(17, 17, 17, 0.7);
+      border-radius: 5px;
+      padding: 10px;
+      z-index: 1;
+    }
+
+    #toolbar {
+      position: absolute;
+      left: 20px;
+      top: 120px;
+      padding: 10px;
+      border-radius: 10px;
+      background-color: rgba(0.2, 0.2, 0.2, 0.6);
+      color: #ffffff;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+<div class="title">地下管网-模型加载与数据显示</div>
+<div id="cesiumContainer"></div>
+<div class="controls">
+  <button class="cesium-button" onclick="func_draw()">程序绘制</button>
+  <button class="cesium-button" onclick="func_model()">加载模型</button>
+  <button class="cesium-button">
+    <label>
+      <input type="checkbox" id="depthTest" onclick="func_depthTest()">深度测试
+    </label>
+  </button>
+  <button class="cesium-button">
+    <label>
+      <input type="checkbox" id="terrain" onclick="func_enableTerrain()">开启地形
+    </label>
+  </button>
+</div>
+<div id="toolbar">
+  <button class="cesium-button" onclick="draw()">绘制开挖区域</button>
+  开挖深度：<input type="text" style="width: 50px;" class="cesium-button"
+              data-bind="value: cullDept, valueUpdate: 'input'">米
+  <button class="cesium-button" onclick="reset()">清除</button>
+</div>
+<script src="index.js"></script>
+</body>
+</html>

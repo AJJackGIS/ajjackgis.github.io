@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>实时调度（最近设施分析）</title>
+  <script src="https://cesiumjs.org/releases/1.57/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesiumjs.org/releases/1.57/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #000000;
+    }
+
+    .cesium-widget-credits {
+      display: none;
+    }
+
+    .title {
+      position: absolute;
+      text-align: center;
+      margin: 0 auto;
+      font-size: 24px;
+      font-weight: bold;
+      z-index: 1;
+      width: 100%;
+      color: #fff;
+      top: 10px;
+    }
+
+    .controls {
+      position: absolute;
+      top: 50px;
+      left: 20px;
+      background-color: rgba(17, 17, 17, 0.7);
+      border-radius: 5px;
+      padding: 10px;
+      z-index: 1;
+      color: white;
+    }
+  </style>
+  <script src="cal.js"></script>
+  <script src="../../data/fireStation.js"></script>
+  <script src="../../libs/turf.min.js"></script>
+  <script src="../../libs/math.cal.js"></script>
+</head>
+
+<body>
+<div class="title">实时调度（最近设施分析）</div>
+<div id="cesiumContainer"></div>
+<div class="controls">
+  <button class="cesium-button" onclick="doAnimation()">开始模拟分析</button>
+  <input type="radio" name="type" class="cesium-button" onclick="selectType('cesium')" checked/> Cesium原生
+  <input type="radio" name="type" class="cesium-button" onclick="selectType('turf')"/> turf
+  <input type="radio" name="type" class="cesium-button" onclick="selectType('grid')"/> grid
+</div>
+<script src="index.js"></script>
+</body>
+</html>

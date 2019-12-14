@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <title>城市道路网数据制作、发布与展示</title>
+  <script src="https://cesiumjs.org/releases/1.57/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesiumjs.org/releases/1.57/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #000000;
+    }
+
+    .cesium-widget-credits {
+      display: none;
+    }
+
+    .title {
+      position: absolute;
+      text-align: center;
+      margin: 0 auto;
+      font-size: 24px;
+      font-weight: bold;
+      z-index: 1;
+      width: 100%;
+      color: #fff;
+      top: 10px;
+    }
+
+  </style>
+</head>
+
+<body>
+<div class="title">城市道路网数据制作、发布与展示</div>
+<div id="cesiumContainer"></div>
+<script src="index.js"></script>
+</body>
+</html>
