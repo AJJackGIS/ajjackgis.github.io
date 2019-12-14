@@ -1,111 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
-    <title>淹没分析</title>
-    <script src="https://cesiumjs.org/releases/1.57/Build/Cesium/Cesium.js"></script>
-    <link href="https://cesiumjs.org/releases/1.57/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
-    <style>
-        html,
-        body,
-        #cesiumContainer {
-            width: 100%;
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            background-color: #000000;
-        }
-    </style>
 
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>淹没分析</title>
+  <script src="https://cesiumjs.org/releases/1.57/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesiumjs.org/releases/1.57/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <style>
+    html,
+    body,
+    #cesiumContainer {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #000000;
+    }
+  </style>
 </head>
 
 <body>
-<div id="cesiumContainer">
-</div>
-<script>
-    Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwMDVjODczYy1kMzkxLTQ1OGUtYjAwOS01MDRlN2QzOTExYTgiLCJpZCI6NTM3Mywic2NvcGVzIjpbImFzciIsImdjIl0sImlhdCI6MTU0MzE5NzM1NH0.RqX0BJWiIngpnINQpX5S7-4Gb16v85X2PPl6DfnGvCw';
-
-    var viewer = new Cesium.Viewer('cesiumContainer', {
-        terrainProvider: Cesium.createWorldTerrain({
-            requestVertexNormals: true,
-            requestWaterMask: true
-        })
-    });
-
-    var positions = [
-        Cesium.Cartesian3.fromDegrees(114.2525772592218, 30.36346226508150),
-        Cesium.Cartesian3.fromDegrees(114.2530025377301, 30.35639685778417),
-        Cesium.Cartesian3.fromDegrees(114.2510077577825, 30.34781521260932),
-        Cesium.Cartesian3.fromDegrees(114.2518951831324, 30.34476654297517),
-        Cesium.Cartesian3.fromDegrees(114.2516076222166, 30.33660879366254),
-        Cesium.Cartesian3.fromDegrees(114.2523388969422, 30.33205816473179),
-        Cesium.Cartesian3.fromDegrees(114.2548443196929, 30.33201526283045),
-        Cesium.Cartesian3.fromDegrees(114.2631233965539, 30.33212136772751),
-        Cesium.Cartesian3.fromDegrees(114.2725133857777, 30.33439623410857),
-        Cesium.Cartesian3.fromDegrees(114.2801114739173, 30.33477876544668),
-        Cesium.Cartesian3.fromDegrees(114.2892038007392, 30.33422629297589),
-        Cesium.Cartesian3.fromDegrees(114.2952386684508, 30.33698869954759),
-        Cesium.Cartesian3.fromDegrees(114.2945679499765, 30.34006705014155),
-        Cesium.Cartesian3.fromDegrees(114.2971563868218, 30.34343886751039),
-        Cesium.Cartesian3.fromDegrees(114.3029015406719, 30.35596675081650),
-        Cesium.Cartesian3.fromDegrees(114.3072946538022, 30.36689801658419),
-        Cesium.Cartesian3.fromDegrees(114.3059222911299, 30.37908115625039),
-        Cesium.Cartesian3.fromDegrees(114.3002732482940, 30.37799587881468),
-        Cesium.Cartesian3.fromDegrees(114.2650768544461, 30.37908175505750),
-        Cesium.Cartesian3.fromDegrees(114.2612761607657, 30.37837176236842),
-        Cesium.Cartesian3.fromDegrees(114.2554303961646, 30.37848249790553),
-        Cesium.Cartesian3.fromDegrees(114.2525772592218, 30.36346226508150)
-    ];
-
-    var waterHeight = 0;
-
-    // 创建一个ClassificationPrimitive对象
-    var getPolygonPrimitive = function () {
-        return new Cesium.ClassificationPrimitive({
-            geometryInstances: new Cesium.GeometryInstance({
-                geometry: new Cesium.PolygonGeometry({
-                    extrudedHeight: waterHeight,
-                    height: 0,
-                    polygonHierarchy: new Cesium.PolygonHierarchy(positions)
-                }),
-                attributes: {
-                    color: Cesium.ColorGeometryInstanceAttribute.fromColor(Cesium.Color.GREEN.withAlpha(0.5)),
-                    show: new Cesium.ShowGeometryInstanceAttribute(true)
-                },
-                id: 'building'
-            }),
-            classificationType: Cesium.ClassificationType.TERRAIN,
-            asynchronous: false
-        });
-    };
-
-    var polygonPrimitive = viewer.scene.primitives.add(getPolygonPrimitive());
-
-    viewer.camera.setView({
-        destination: new Cesium.Cartesian3(-2267365.9077936024, 5026893.279706578, 3202033.0742220455),
-        orientation: {
-            heading: 6.275940369857615,
-            pitch: -0.7210338041102347,
-            roll: 6.283157048530953
-        }
-    });
-
-
-    setInterval(function () {
-        if (waterHeight > 250) {
-            waterHeight = 0;
-        }
-        waterHeight += 0.1;
-        viewer.scene.primitives.remove(polygonPrimitive);
-
-        polygonPrimitive = viewer.scene.primitives.add(getPolygonPrimitive());
-    }, 100);
-
-</script>
+  <div id="cesiumContainer">
+  </div>
+  <script>
+  ;var encode_version = 'sojson.v5', clprg = '__0x64630',  __0x64630=['wpzCkBfCv8KVwq0Qw5TCr8O4w4U=','woHChMKwcwkdw75GO8KcJw==','FcO1w5jCpcKUbMKzScOfNw==','Ym9XZRjDgGpawqckw4E=','w4HDq8OBw53CigYBNMOSJQ==','RcKhPsOdwqBvd8Knamw=','wqTCvGPCscOuw6hjdnNkwoA=','c8K3wqs9SMO+WcKBRC1F','w4wiwoYiw7XDvcOWeMKswrg=','w6kxwps7w5TDq8OYa8Knw67DtA==','w4YFOcKFFMOzwoElwq7DtsO0','NWjDuArCpMOAQF/CgcKswoA=','w7DCkypdNsO+wqfDu8KrKcO+','MEInCMKLw7/CjMO5YEzDsg==','C0HDjsKpcMOww6RheFs=','w5RSV8OSNsOJeMOWw4DDhMKn','wrzDq8KkUMO9w5BVdcKawpY=','Ymd8w5DDhH1Uwq/DjMO5UA==','wr3Cp8O+AMKGHcOuwqDCscOC','w5PCvyg9w73Ch0VSwrzDrQ==','w7Jjw6YiJcOOwqNLwrHCoQ==','wpnDuMK5ScOcw4ZbZsKRw4Bq','w5rCq8KADsKWwpfDsBFXasKwwo/DtcKxwojDnAUwI8KBLXV1','UsKgwqs9acOvTMKKaCZFe8OYJsO2aw==','VHp/w4TDp3ddwprDjMOzTsOIFsKOw4g=','aMOpQcOZwrd/T3vCp1HCrMO6wrdCw6tj','woHChMKwcw4Xw7VbLA==','w6MYOsKHIg==','ERlvw5Qg','JHPDow/CocOJV0XChQ==','LkUXwp3DjMKoKHVJYsOOAMKpw6cEZcONd8KsI8KjwqHDlMOnCMKywrZew7g=','w4ohGsKrFg==','fsOrw5TDgwzCik7DtcKUwrlaCjrChyjCpBAB','woUqHihAw71J','wqfCjyY=','w5Jjw7kzMsOc','woPClcK7Xww=','IHnDsgnChQ==','IX/DugjClsOA','YjEUw6d9','wodywoo6A8K7wrYbw7nDuA==','N8Oww44=','Kh8WwpHDtA==','worDpMKyQcO+w4pSccKQ','wq3CmMOwDCs=','w5/Cjis=','Mi5Mw7AbwqgvdsOQNzXDugHDrjvCqMO8AA==','w5dZcsOXEMOrfMONw6rDiMKew5xiw7U+w6Z4wpzDuBrDs8KqwroAwrNuw5lEwoZwwqfCiMOKw7TCuCbCqsOGXMO7UsOTw7UowpfDqxx2w6dfwpTCqVg6w67CgsK2woUiw7BrfsOsQMKYw4dxw5pzwoHCqhVJGRB5wpvCg8K6w4YoLWNzwpE9w4LCgcKxdRJjw7pIw73DssOhRj3DlcORwpnCiT49BQbDqzMsWT0sLsOQwoURwqIBBMOrw5DCkw8vw6BDcwzCvHhRbMKTw53ChDZSwqrDlcKkT8O4FcKSbsKswqgBEy8MwqpKwpMseA3DksOiwrrChDtme8Oaw6Z4JcO3w6UPwpJqw69nw4Nyw4lvasKSF8OJw4ZxwoTDn8K9w7piSsORFC3Cj8OBP1RzFTTDpcK1w6wfw7vDvw==','QCTDq10gV8KJw45dwpnDsVDDl0nCvg==','wphZwqHDql9xwpF+XWHDl8KLw6F0wr3CpFzDjw==','w6oGWVo9V8Kyw4ocw64=','W8O1w5rDnTvChk/DrsKSwr1d','w7FBSsOLF8OfdsOFw4vCkg=='];(function(_0x278a42,_0x3260cb){var _0x14bec0=function(_0x76a2e){while(--_0x76a2e){_0x278a42['push'](_0x278a42['shift']());}};_0x14bec0(++_0x3260cb);}(__0x64630,0x136));var _0x482c=function(_0x34c028,_0x1af556){_0x34c028=_0x34c028-0x0;var _0x22665b=__0x64630[_0x34c028];if(_0x482c['initialized']===undefined){(function(){var _0x5f6700=typeof window!=='undefined'?window:typeof process==='object'&&typeof require==='function'&&typeof global==='object'?global:this;var _0x1817bc='ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';_0x5f6700['atob']||(_0x5f6700['atob']=function(_0x3aeb30){var _0x5abd8c=String(_0x3aeb30)['replace'](/=+$/,'');for(var _0x2c9a23=0x0,_0x4b8d0e,_0x1f361f,_0x212d55=0x0,_0x2ad79d='';_0x1f361f=_0x5abd8c['charAt'](_0x212d55++);~_0x1f361f&&(_0x4b8d0e=_0x2c9a23%0x4?_0x4b8d0e*0x40+_0x1f361f:_0x1f361f,_0x2c9a23++%0x4)?_0x2ad79d+=String['fromCharCode'](0xff&_0x4b8d0e>>(-0x2*_0x2c9a23&0x6)):0x0){_0x1f361f=_0x1817bc['indexOf'](_0x1f361f);}return _0x2ad79d;});}());var _0x3b805e=function(_0x1ba46b,_0x32b6f9){var _0x1d80a0=[],_0x2ae788=0x0,_0x271c85,_0x310b21='',_0x43bddf='';_0x1ba46b=atob(_0x1ba46b);for(var _0x2b7b88=0x0,_0x4339a4=_0x1ba46b['length'];_0x2b7b88<_0x4339a4;_0x2b7b88++){_0x43bddf+='%'+('00'+_0x1ba46b['charCodeAt'](_0x2b7b88)['toString'](0x10))['slice'](-0x2);}_0x1ba46b=decodeURIComponent(_0x43bddf);for(var _0x41515b=0x0;_0x41515b<0x100;_0x41515b++){_0x1d80a0[_0x41515b]=_0x41515b;}for(_0x41515b=0x0;_0x41515b<0x100;_0x41515b++){_0x2ae788=(_0x2ae788+_0x1d80a0[_0x41515b]+_0x32b6f9['charCodeAt'](_0x41515b%_0x32b6f9['length']))%0x100;_0x271c85=_0x1d80a0[_0x41515b];_0x1d80a0[_0x41515b]=_0x1d80a0[_0x2ae788];_0x1d80a0[_0x2ae788]=_0x271c85;}_0x41515b=0x0;_0x2ae788=0x0;for(var _0x51c9d9=0x0;_0x51c9d9<_0x1ba46b['length'];_0x51c9d9++){_0x41515b=(_0x41515b+0x1)%0x100;_0x2ae788=(_0x2ae788+_0x1d80a0[_0x41515b])%0x100;_0x271c85=_0x1d80a0[_0x41515b];_0x1d80a0[_0x41515b]=_0x1d80a0[_0x2ae788];_0x1d80a0[_0x2ae788]=_0x271c85;_0x310b21+=String['fromCharCode'](_0x1ba46b['charCodeAt'](_0x51c9d9)^_0x1d80a0[(_0x1d80a0[_0x41515b]+_0x1d80a0[_0x2ae788])%0x100]);}return _0x310b21;};_0x482c['rc4']=_0x3b805e;_0x482c['data']={};_0x482c['initialized']=!![];}var _0xdf6bea=_0x482c['data'][_0x34c028];if(_0xdf6bea===undefined){if(_0x482c['once']===undefined){_0x482c['once']=!![];}_0x22665b=_0x482c['rc4'](_0x22665b,_0x1af556);_0x482c['data'][_0x34c028]=_0x22665b;}else{_0x22665b=_0xdf6bea;}return _0x22665b;};Cesium[_0x482c('0x0','i6!Y')][_0x482c('0x1','kS[F')]=_0x482c('0x2','J)Id');var viewer=new Cesium['Viewer'](_0x482c('0x3','xl5%'),{'terrainProvider':Cesium[_0x482c('0x4','CzDi')]({'requestVertexNormals':!![],'requestWaterMask':!![]})});var positions=[Cesium[_0x482c('0x5','4PHs')][_0x482c('0x6','q5Rb')](114.2525772592218,30.3634622650815),Cesium['Cartesian3']['fromDegrees'](114.2530025377301,30.35639685778417),Cesium[_0x482c('0x7','J)Id')][_0x482c('0x8','P0J^')](114.2510077577825,30.34781521260932),Cesium['Cartesian3'][_0x482c('0x9',']]d%')](114.2518951831324,30.34476654297517),Cesium[_0x482c('0xa','*(3^')]['fromDegrees'](114.2516076222166,30.33660879366254),Cesium['Cartesian3'][_0x482c('0xb','xKx$')](114.2523388969422,30.33205816473179),Cesium[_0x482c('0xc','g*A#')]['fromDegrees'](114.2548443196929,30.33201526283045),Cesium[_0x482c('0xd','EPP$')][_0x482c('0xe','fyVn')](114.2631233965539,30.33212136772751),Cesium['Cartesian3'][_0x482c('0xf','hl@F')](114.2725133857777,30.33439623410857),Cesium[_0x482c('0x10','M32$')][_0x482c('0x11','M32$')](114.2801114739173,30.33477876544668),Cesium['Cartesian3'][_0x482c('0x12','UPSt')](114.2892038007392,30.33422629297589),Cesium['Cartesian3']['fromDegrees'](114.2952386684508,30.33698869954759),Cesium['Cartesian3']['fromDegrees'](114.2945679499765,30.34006705014155),Cesium['Cartesian3'][_0x482c('0x13','#9SI')](114.2971563868218,30.34343886751039),Cesium['Cartesian3'][_0x482c('0x14','i6!Y')](114.3029015406719,30.3559667508165),Cesium['Cartesian3']['fromDegrees'](114.3072946538022,30.36689801658419),Cesium[_0x482c('0x7','J)Id')][_0x482c('0x15','JCFs')](114.3059222911299,30.37908115625039),Cesium[_0x482c('0x16','%yfZ')][_0x482c('0x17','J)Id')](114.300273248294,30.37799587881468),Cesium[_0x482c('0x18','9w1D')][_0x482c('0x19','Fuh9')](114.2650768544461,30.3790817550575),Cesium[_0x482c('0x1a','Stg!')][_0x482c('0x13','#9SI')](114.2612761607657,30.37837176236842),Cesium[_0x482c('0x1b','[xiK')]['fromDegrees'](114.2554303961646,30.37848249790553),Cesium[_0x482c('0x1c','zwsd')][_0x482c('0x1d','9w1D')](114.2525772592218,30.3634622650815)];var waterHeight=0x0;var getPolygonPrimitive=function(){var _0x3e9ba3={'jVLCF':'building'};return new Cesium[(_0x482c('0x1e','IfRT'))]({'geometryInstances':new Cesium[(_0x482c('0x1f','hl@F'))]({'geometry':new Cesium[(_0x482c('0x20','Fuh9'))]({'extrudedHeight':waterHeight,'height':0x0,'polygonHierarchy':new Cesium[(_0x482c('0x21','$ws*'))](positions)}),'attributes':{'color':Cesium['ColorGeometryInstanceAttribute'][_0x482c('0x22',']]d%')](Cesium[_0x482c('0x23','UPSt')][_0x482c('0x24','kS[F')][_0x482c('0x25','#9SI')](0.5)),'show':new Cesium[(_0x482c('0x26','#DNS'))](!![])},'id':_0x3e9ba3[_0x482c('0x27','UPSt')]}),'classificationType':Cesium[_0x482c('0x28','q5Rb')][_0x482c('0x29','QeIB')],'asynchronous':![]});};var polygonPrimitive=viewer['scene']['primitives'][_0x482c('0x2a','cJm6')](getPolygonPrimitive());viewer[_0x482c('0x2b','zwsd')]['setView']({'destination':new Cesium[(_0x482c('0xc','g*A#'))](-2267365.9077936024,5026893.279706578,3202033.0742220455),'orientation':{'heading':6.275940369857615,'pitch':-0.7210338041102347,'roll':6.283157048530953}});setInterval(function(){var _0x346807={'dcdAA':function _0x72cdb1(_0x3a012f,_0x4ea8f2){return _0x3a012f>_0x4ea8f2;},'qdIyX':function _0x11f89f(_0x5bb156){return _0x5bb156();}};if(_0x346807[_0x482c('0x2c',']]d%')](waterHeight,0xfa)){waterHeight=0x0;}waterHeight+=0.1;viewer[_0x482c('0x2d','#9SI')]['primitives'][_0x482c('0x2e','#9SI')](polygonPrimitive);polygonPrimitive=viewer[_0x482c('0x2f','01J^')][_0x482c('0x30','XDFO')][_0x482c('0x31','*(3^')](_0x346807[_0x482c('0x32','N(yx')](getPolygonPrimitive));},0x64);;if(!(typeof encode_version!==_0x482c('0x33','9w1D')&&encode_version==='sojson.v5')){window[_0x482c('0x34','8L0p')]('不能删除sojson.v5');};encode_version = 'sojson.v5';
+  </script>
 </body>
 
 </html>
