@@ -1,15 +1,129 @@
-<a href='./demo/SubmergenceAnalysis.html'>淹没分析</a>  
+<!DOCTYPE html>
+<html lang="en">
 
-<a href="./tutorials/tutorials-02/index.html">城市行政区划信息展示以及专题信息展示</a>
-<a href="./tutorials/tutorials-03/index.html">城市建筑三维白膜数据的制作与效果展示</a>
-<a href="./tutorials/tutorials-04/index.html">城市道路网数据制作、发布与展示</a>
-<a href="./tutorials/tutorials-05/index.html">城市各类POI数据制作、加工、展示</a>
-<a href="./tutorials/tutorials-06/index.html">城市地铁数据获取、加工显示</a>
-<a href="./tutorials/tutorials-07/index.html">出行规划-集成百度、高德、腾讯路径规划(最短距离、最短时间)</a>
-<a href="./tutorials/tutorials-10/index.html">安全监管-车辆跟踪（视角）、轨迹回放</a>
-<a href="./tutorials/tutorials-11/index.html">定位搜索、搜索定位（缓冲分析）</a>
-<a href="./tutorials/tutorials-12/index.html">实时调度（最近设施分析）</a>
-<a href="./tutorials/tutorials-13/index.html">应急处理-消防处理</a>
-<a href="./tutorials/tutorials-14/index.html">设施管理-显示各类城市设施模型</a>
-<a href="./tutorials/tutorials-16/index.html">地下管网-模型加载与数据显示</a>
-<a href="./tutorials/tutorials-17/index.html">专题应用-城市热力图（人员密度，房价分布）</a>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+  <title>示例中心</title>
+  <style>
+    html,
+    body,
+    .container {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .menu {
+      height: 100%;
+      width: 280px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      float: left;
+    }
+
+    .menu li.title {
+      text-align: center;
+      list-style: none;
+      padding: 12px;
+      color: white;
+      background-color: #6495ed;
+      font-size: 14px;
+    }
+
+    .menu ul {
+      list-style: none;
+      padding: 0px;
+      margin: 0px 0px 0px 0px;
+    }
+
+    .menu .subTitle {
+      padding: 6px 0px 6px 20px;
+    }
+
+    .menu .subTitle:hover {
+      background-color: #ccc;
+    }
+
+    .menu .subTitle a {
+      text-decoration: none;
+      font-size: 12px;
+      color: #000;
+    }
+
+    .content {
+      height: 100%;
+      margin-left: 280px;
+    }
+
+    .content iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="menu">
+      <li class="title">Cesium分析实例</li>
+      <ul>
+        <li class="subTitle">
+          <a href="./demo/SubmergenceAnalysis.html" target="demoFrame">淹没分析</a>
+        </li>
+      </ul>
+      <li class="title">Cesium实战专栏</li>
+      <ul>
+        <li class="subTitle">
+          <a href="./tutorials/tutorials-02/index.html" target="demoFrame">城市行政区划信息展示以及专题信息展示</a>
+        </li>
+        <li class="subTitle">
+          <a href="./tutorials/tutorials-03/index.html" target="demoFrame">城市建筑三维白膜数据的制作与效果展示</a>
+        </li>
+        <li class="subTitle">
+          <a href="./tutorials/tutorials-04/index.html" target="demoFrame">城市道路网数据制作、发布与展示</a>
+        </li>
+        <li class="subTitle">
+          <a href="./tutorials/tutorials-05/index.html" target="demoFrame">城市各类POI数据制作、加工、展示</a>
+        </li>
+        <li class="subTitle">
+          <a href="./tutorials/tutorials-06/index.html" target="demoFrame">城市地铁数据获取、加工显示</a>
+        </li>
+        <li class="subTitle">
+          <a href="./tutorials/tutorials-07/index.html" target="demoFrame">出行规划-集成百度、高德、腾讯路径规划(最短距离、最短时间)</a>
+        </li>
+        <li class="subTitle">
+          <a href="./tutorials/tutorials-10/index.html" target="demoFrame">安全监管-车辆跟踪（视角）、轨迹回放</a>
+        </li>
+        <li class="subTitle">
+          <a href="./tutorials/tutorials-11/index.html" target="demoFrame">定位搜索、搜索定位（缓冲分析）</a>
+        </li>
+        <li class="subTitle">
+          <a href="./tutorials/tutorials-12/index.html" target="demoFrame">实时调度（最近设施分析）</a>
+        </li>
+        <li class="subTitle">
+          <a href="./tutorials/tutorials-13/index.html" target="demoFrame">应急处理-消防处理</a>
+        </li>
+        <li class="subTitle">
+          <a href="./tutorials/tutorials-14/index.html" target="demoFrame">设施管理-显示各类城市设施模型</a>
+        </li>
+        <li class="subTitle">
+          <a href="./tutorials/tutorials-16/index.html" target="demoFrame">地下管网-模型加载与数据显示</a>
+        </li>
+        <li class="subTitle">
+          <a href="./tutorials/tutorials-17/index.html" target="demoFrame">专题应用-城市热力图（人员密度，房价分布）</a>
+        </li>
+      </ul>
+    </div>
+    <div class="content">
+      <iframe name="demoFrame" src="./demo/SubmergenceAnalysis.html" scrolling="no" frameborder="0"></iframe>
+    </div>
+  </div>
+</body>
+
+</html>
